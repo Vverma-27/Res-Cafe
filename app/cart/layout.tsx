@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import SearchBar from "@/components/searchBar";
 import { IoFastFoodOutline } from "react-icons/io5";
 import useStore from "@/store";
@@ -23,7 +23,7 @@ export default function RootLayout({
       <body
         className={
           inter.className +
-          `w-full min-h-full h-fit p-4 bg-tertiary text-black overflow-y-scroll overflow-x-hidden no-scrollbar flex flex-col`
+          `w-full min-h-full h-full p-4 bg-tertiary text-black overflow-y-scroll overflow-x-hidden no-scrollbar flex flex-col`
         }
       >
         <Header />
