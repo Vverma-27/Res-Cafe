@@ -23,7 +23,7 @@ const NotFound = () => {
           Sorry this page is as empty as this plate
         </p>
         <p className="text-[#E4C41B] font-bold text-sm">
-          Don't worry Just Take a Break or Try Reloading
+          Don{"'"}t worry Just Take a Break or Try Reloading
         </p>
       </div>
     </div>

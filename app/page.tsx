@@ -173,8 +173,6 @@ export default function Home() {
     state.setActiveDish,
   ]);
   const [cart, setCart] = useStore((state) => [state.cart, state.setCart]);
-  const onAdd = useStore((state) => state.onAdd);
-  const onRemove = useStore((state) => state.onRemove);
   const [activeCategory, setActiveCategory] = useState(Object.keys(menu)[0]);
   // console.log("🚀 ~ onAdd ~ cartOpen:", cartOpen);
   // const [initalMenu, setInitMenu] = useState({});
@@ -183,7 +181,7 @@ export default function Home() {
       const menu = await getMenu();
       setMenu(menu);
     })();
-  }, []);
+  }, [setMenu]);
   useEffect(() => {
     setActiveCategory(Object.keys(menu)[0]);
   }, [menu]);

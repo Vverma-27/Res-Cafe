@@ -1,11 +1,18 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect, useRef, useMemo, RefObject } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  RefObject,
+  useCallback,
+} from "react";
 
 const PaymentComponent = () => {
   const [hash, setHash] = useState("");
   const searchParams = useSearchParams();
-  const formRef = useRef<RefObject<HTMLFormElement>>();
+  const formRef = useRef<any>();
   const generateTxnId = () => {
     const now = new Date();
     const timestamp = Date.now(); // Current timestamp in milliseconds
@@ -16,24 +23,10 @@ const PaymentComponent = () => {
     return `TXN${timestamp}${day}${month}${randomPart}`;
   };
   const txnid = useMemo(() => generateTxnId(), []);
-
-  const data = {
-    txnid, // String
-    amount: searchParams.get("amount") || "0", // Float
-    productinfo: "food", // String
-    firstname: searchParams.get("firstname") || "", // String
-    email: searchParams.get("email") || "", // String
-  };
-  useEffect(() => {
-    paymentReq();
-  }, []);
-  useEffect(() => {
-    if (hash) formRef.current?.submit();
-  }, [hash]);
   // This method will generate the hash value
-  const paymentReq = async () => {
+  const paymentReq = useCallback(async () => {
     try {
-      const response = await fetch(`${url}/payment`, {
+      const response = await fetch(`${process.env.CLIENT_API_URL}/payment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +38,23 @@ const PaymentComponent = () => {
     } catch (error) {
       console.log("Payment Error:", error);
     }
-  };
+  }, []);
+  const data = useMemo(
+    () => ({
+      txnid, // String
+      amount: searchParams.get("amount") || "0", // Float
+      productinfo: "food", // String
+      firstname: searchParams.get("firstname") || "", // String
+      email: searchParams.get("email") || "", // String
+    }),
+    []
+  );
+  useEffect(() => {
+    paymentReq();
+  }, [paymentReq]);
+  useEffect(() => {
+    if (hash) formRef.current?.submit();
+  }, [hash]);
   return (
     <form action={process.env.PAYU_URL} method="post" ref={formRef}>
       <input type="hidden" name="key" value={process.env.PAYU_KEY} />
