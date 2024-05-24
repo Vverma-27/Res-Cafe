@@ -6,9 +6,6 @@ const PaymentComponent = () => {
   const [hash, setHash] = useState("");
   const searchParams = useSearchParams();
   const formRef = useRef<RefObject<HTMLFormElement>>();
-  const PAYU_KEY = "SlETOD";
-  const PAYU_URL = "https://test.payu.in/_payment";
-  let url = "http://howdy.example.localhost:3000/restaurant/client";
   const generateTxnId = () => {
     const now = new Date();
     const timestamp = Date.now(); // Current timestamp in milliseconds
@@ -50,8 +47,8 @@ const PaymentComponent = () => {
     }
   };
   return (
-    <form action={PAYU_URL} method="post" ref={formRef}>
-      <input type="hidden" name="key" value={PAYU_KEY} />
+    <form action={process.env.PAYU_URL} method="post" ref={formRef}>
+      <input type="hidden" name="key" value={process.env.PAYU_KEY} />
       <input type="hidden" name="txnid" value={txnid} />
       <input type="hidden" name="productinfo" value={data.productinfo} />
       <input type="hidden" name="amount" value={data.amount} />
@@ -63,8 +60,16 @@ const PaymentComponent = () => {
         name="lastname"
         value={searchParams.get("lastname") || ""}
       />
-      <input type="hidden" name="surl" value={`${url}/payment/success`} />
-      <input type="hidden" name="furl" value={`${url}/payment/fail`} />
+      <input
+        type="hidden"
+        name="surl"
+        value={`${process.env.CLIENT_API_URL}/payment/success`}
+      />
+      <input
+        type="hidden"
+        name="furl"
+        value={`${process.env.CLIENT_API_URL}/payment/fail`}
+      />
       <input
         type="hidden"
         name="phone"
