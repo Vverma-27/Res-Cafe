@@ -7,6 +7,7 @@ import {
   useMemo,
   RefObject,
   useCallback,
+  Suspense,
 } from "react";
 
 const PaymentComponent = () => {
@@ -87,5 +88,10 @@ const PaymentComponent = () => {
     </form>
   );
 };
+const PaymentPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <PaymentComponent />
+  </Suspense>
+);
 
-export default PaymentComponent;
+export default PaymentPage;
