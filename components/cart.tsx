@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CartItem from "./cartItem";
 import useStore from "@/store";
@@ -8,10 +8,15 @@ const Cart = () => {
   const cart = useStore((state) => state.cart);
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
-  const [name, setName] = useState(localStorage?.getItem("name") || "");
-  const [email, setEmail] = useState(localStorage?.getItem("email") || "");
-  const [number, setNumber] = useState(localStorage?.getItem("number") || "");
-
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [number, setNumber] = useState("");
+  useEffect(() => {
+    // Only run this code on the client side
+    setName(localStorage.getItem("name") || "");
+    setEmail(localStorage.getItem("email") || "");
+    setNumber(localStorage.getItem("number") || "");
+  }, []);
   if (Object.values(cart).length === 0) {
     router.push("/");
     return null;
