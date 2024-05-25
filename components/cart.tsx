@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import CartItem from "./cartItem";
 import useStore from "@/store";
 import Modal from "./modal";
+import { BiArrowBack } from "react-icons/bi";
 
 const Cart = () => {
   const cart = useStore((state) => state.cart);
@@ -29,7 +30,18 @@ const Cart = () => {
   return (
     <div className="flex flex-col h-[85.5vh] w-full overflow-hidden">
       <div className="w-full flex flex-col gap-6 flex-grow overflow-hidden">
-        <h2 className="font-bold font-sans text-lg self-center">Cart</h2>
+        <div className="relative">
+          <div
+            onClick={() => router?.push("/")}
+            className="flex items-center gap-0.5 cursor-pointer absolute left-0 top-1/2 -translate-y-1/2"
+          >
+            <BiArrowBack color="black" fontSize={12} />
+            <p className="font-bold text-xs">Back</p>
+          </div>
+          <h2 className="font-bold font-sans text-lg flex-1 text-center">
+            Cart
+          </h2>
+        </div>
         <div className="flex flex-col gap-6 w-full overflow-y-auto no-scrollbar">
           {Object.values(cart).map((item) => (
             <>
