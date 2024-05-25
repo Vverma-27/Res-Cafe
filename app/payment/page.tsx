@@ -57,8 +57,12 @@ const PaymentComponent = () => {
     if (hash) formRef.current?.submit();
   }, [hash]);
   return (
-    <form action={process.env.PAYU_URL} method="post" ref={formRef}>
-      <input type="hidden" name="key" value={process.env.PAYU_KEY} />
+    <form action={process.env.NEXT_PUBLIC_PAYU_URL} method="post" ref={formRef}>
+      <input
+        type="hidden"
+        name="key"
+        value={process.env.NEXT_PUBLIC_PAYU_KEY}
+      />
       <input type="hidden" name="txnid" value={txnid} />
       <input type="hidden" name="productinfo" value={data.productinfo} />
       <input type="hidden" name="amount" value={data.amount} />
