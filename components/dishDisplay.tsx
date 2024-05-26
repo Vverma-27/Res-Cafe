@@ -31,13 +31,13 @@ const DishDisplay = ({
         <Image
           src={dish?.image || "/assets/images/lasagna.png"}
           alt={dish.name}
-          width={200}
-          height={200}
+          width={160}
+          height={160}
           className="rounded-full self-center aspect-square"
         />
         <div className="flex w-full justify-between items-center">
           <div>
-            <h2 className="font-bold font-sans text-lg">
+            <h2 className="font-bold font-sans text-lg capitalize">
               {dish.name}
               <Image
                 src={`/assets/images/${dish.veg ? "veg" : "non-veg"}-icon.png`}

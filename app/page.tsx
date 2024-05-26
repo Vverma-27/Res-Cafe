@@ -197,7 +197,7 @@ export default function Home() {
     router.push("/404");
     return null;
   }
-  if (!menu)
+  if (!menu || firstLoad)
     return (
       <div
         role="status"
@@ -225,7 +225,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-10">
       <div>
-        <h2 className=" text-4xl m-0">Welcome To Howdy</h2>
+        <h2 className=" text-4xl m-0">Welcome To {restaurantName}!</h2>
         <p>Good food is brewing</p>
       </div>
       {/* <div className="flex justify-center items-center gap-[8vh] w-fit text-black">
@@ -248,7 +248,7 @@ export default function Home() {
         <CustomLink active={false} text={"Asian"} />
         <CustomLink active={false} text={"Continental"} /> */}
       </div>
-      <div className="flex justify-start items-center gap-6 w-full flex-wrap">
+      <div className="flex justify-around items-stretch gap-y-10 w-full flex-wrap">
         {menu?.[activeCategory]?.dishes?.map((dish: IDish) => (
           <DishCard dish={dish} imageOverflow key={dish._id} />
         ))}
@@ -256,7 +256,7 @@ export default function Home() {
       {!activeDish ? null : (
         <DishDisplay
           dish={activeDish}
-          similar={menu[activeCategory].dishes}
+          similar={menu[activeCategory]?.dishes || []}
           qty={cart[activeDish.name]?.qty || 0}
         />
       )}

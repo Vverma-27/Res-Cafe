@@ -18,7 +18,9 @@ const CartItem = ({ dish, qty }: { dish: IDish; qty: number }) => {
           className="rounded-lg aspect-square"
         />
         <div>
-          <p className="font-sans text-md font-semibold">{dish.name}</p>
+          <p className="font-sans text-md font-semibold capitalize">
+            {dish.name}
+          </p>
           <p className="font-sans text-xs font-light">₹{dish.price}</p>
         </div>
       </div>

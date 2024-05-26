@@ -28,13 +28,16 @@ const PaymentComponent = () => {
   // This method will generate the hash value
   const paymentReq = useCallback(async () => {
     try {
-      const response = await fetch(`${process.env.CLIENT_API_URL}/payment`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_CLIENT_API_URL}/payment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
       const hash = (await response.json()).hash;
       setHash(hash);
     } catch (error) {
