@@ -40,8 +40,10 @@ const SearchBar = () => {
 
   const handleVoiceTyping = () => {
     const SpeechRecognition =
+      //@ts-ignore
       window.SpeechRecognition || window.webkitSpeechRecognition;
     const SpeechGrammarList =
+      //@ts-ignore
       window.SpeechGrammarList || window.webkitSpeechGrammarList;
     if (!menu) return;
     const dishes: string[] = [];
@@ -59,7 +61,7 @@ const SearchBar = () => {
     recognition.lang = "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: any) => {
       let word = event.results[0][0].transcript;
       setSearchTerm(word);
     };
