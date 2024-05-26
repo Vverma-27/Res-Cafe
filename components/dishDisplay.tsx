@@ -27,7 +27,7 @@ const DishDisplay = ({
   const onRemove = useStore((state) => state.onRemove);
   return (
     <Drawer>
-      <div className="flex flex-col justify-start gap-4 items-start w-full">
+      <div className="flex flex-col justify-start gap-4 items-start w-full h-full">
         <Image
           src={dish?.image || "/assets/images/lasagna.png"}
           alt={dish.name}
@@ -61,7 +61,7 @@ const DishDisplay = ({
             count={qty}
           />
         </div>
-        <p className="font-light text-sm font-sans flex-grow overflow-y-scroll no-scrollbar">
+        <p className="font-light text-sm font-sans flex-grow overflow-y-scroll no-scrollbar h-[10px]">
           {dish.description || "No description available"}
         </p>
         {/* </div> */}
