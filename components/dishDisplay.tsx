@@ -37,7 +37,16 @@ const DishDisplay = ({
         />
         <div className="flex w-full justify-between items-center">
           <div>
-            <h2 className="font-bold font-sans text-lg">{dish.name}</h2>
+            <h2 className="font-bold font-sans text-lg">
+              {dish.name}
+              <Image
+                src={`/assets/images/${dish.veg ? "veg" : "non-veg"}-icon.png`}
+                alt={"veg-non-veg"}
+                className="inline-block ml-2"
+                height={15}
+                width={15}
+              />
+            </h2>
             <p className="font-bold font-sans text-sm text-[#FF9633]">
               ₹{dish.price}
             </p>
@@ -52,12 +61,12 @@ const DishDisplay = ({
             count={qty}
           />
         </div>
-        <p className="font-light text-sm font-sans">
+        <p className="font-light text-sm font-sans flex-grow overflow-y-scroll no-scrollbar">
           {dish.description || "No description available"}
         </p>
         {/* </div> */}
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 mt-auto">
         <p className="font-bold font-sans text-[#777]">Similar Dishes</p>
         <div className="flex justify-start gap-6 items-center max-w-fit w-[calc(100vw-1rem)] overflow-x-scroll p-1 pb-3 no-scrollbar">
           {similar.map((dishArg: IDish) => {
