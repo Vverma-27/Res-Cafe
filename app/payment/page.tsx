@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   useState,
   useEffect,
@@ -13,6 +13,7 @@ import {
 const PaymentComponent = () => {
   const [hash, setHash] = useState("");
   const searchParams = useSearchParams();
+  const router = useRouter();
   const formRef = useRef<any>();
   const generateTxnId = () => {
     const now = new Date();
@@ -56,6 +57,15 @@ const PaymentComponent = () => {
   useEffect(() => {
     if (hash) formRef.current?.submit();
   }, [hash]);
+
+  if (
+    !searchParams.get("firstname") ||
+    !searchParams.get("email") ||
+    !searchParams.get("amount")
+  ) {
+    router.push("/");
+    return null;
+  }
   return (
     <form action={process.env.NEXT_PUBLIC_PAYU_URL} method="post" ref={formRef}>
       <input

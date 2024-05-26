@@ -45,7 +45,16 @@ const DishCard = ({
         />
         {/* </div> */}
       </div>
-      <p className="font-black text-sm">{dish.name}</p>
+      <p className="font-black text-sm">
+        {dish.name}
+        <Image
+          src={`/assets/images/${dish.veg ? "veg" : "non-veg"}-icon.png`}
+          alt={"veg-non-veg"}
+          className="inline-block ml-2"
+          height={15}
+          width={15}
+        />
+      </p>
       <p className="text-xs font-light">₹{dish.price}</p>
     </div>
   );

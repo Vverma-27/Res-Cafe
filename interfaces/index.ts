@@ -8,6 +8,7 @@ export interface ICategories {
 }
 export type Menu = { [categoryName: string]: { dishes: IDish[]; _id: string } };
 export interface IDish {
+  veg: boolean;
   name: string;
   _id: string;
   price: number;
@@ -20,10 +21,14 @@ export type Cart = {
 export interface IStore {
   menu: Menu;
   setMenu: (menu: Menu) => void;
+  restaurantName: string;
+  setRestaurantName: (name: string) => void;
   activeDish: null | IDish;
   setActiveDish: (activeDish: IDish | null) => void;
   cart: Cart;
   setCart: (cart: Cart) => void;
   onAdd: (dish: IDish) => void;
   onRemove: (dish: IDish) => void;
+  firstLoad: boolean;
+  setFirstLoad: (val: boolean) => void;
 }

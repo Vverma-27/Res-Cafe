@@ -100,6 +100,10 @@ import { create } from "zustand";
 const useStore = create((set, get: () => IStore) => {
   return {
     menu: {},
+    restaurantName: "",
+    setRestaurantName: (restaurantName: string) => set({ restaurantName }),
+    firstLoad: true,
+    setFirstLoad: (val: boolean) => set({ firstLoad: val }),
     setMenu: (menu: Menu) => set({ menu }),
     activeDish: null,
     setActiveDish: (activeDish: IDish | null) => set({ activeDish }),
