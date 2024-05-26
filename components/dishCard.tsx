@@ -13,8 +13,10 @@ const DishCard = ({
   const setActiveDish = useStore((state) => state.setActiveDish);
   return (
     <div
-      className={`min-w-[30vw] w-[38vw] py-2 px-0 rounded-xl relative ${
-        imageOverflow ? "bg-primary" : "bg-white"
+      className={` py-2 px-0 rounded-xl relative ${
+        imageOverflow
+          ? "bg-primary min-w-[30vw] w-[38vw]"
+          : "bg-white min-w-[37vw]"
       } flex flex-col justify-between items-center font-mono text-black gap-3`}
       style={{
         boxShadow: imageOverflow
