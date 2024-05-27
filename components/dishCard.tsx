@@ -17,9 +17,9 @@ const DishCard = ({
     <div
       className={` pb-3 px-0 rounded-xl relative ${
         imageOverflow
-          ? "bg-primary min-w-[30vw] w-[34vw]"
-          : "bg-white min-w-[34vw]"
-      } flex flex-col justify-between items-center font-mono text-black gap-[3vh]`}
+          ? "bg-primary min-w-[30vw] w-[37vw]"
+          : "bg-white min-w-[37vw]"
+      } flex flex-col justify-between items-center font-mono text-black gap-2`}
       style={{
         boxShadow: imageOverflow
           ? "rgba(0, 0, 0, 0.25) -8px 8px 10px -10px"
@@ -28,10 +28,12 @@ const DishCard = ({
       onClick={() => setActiveDish(dish)}
     >
       <div
-        className={`overflow-hidden rounded-t-lg relative `}
+        className={`overflow-hidden rounded-full relative ${
+          imageOverflow ? "mb-[-2vh] top-[-4vh]" : ""
+        }`}
         style={{
-          width: "100%",
-          height: "12vh",
+          width: "14vh",
+          height: "14vh",
         }}
       >
         {/* <div
@@ -41,10 +43,10 @@ const DishCard = ({
         <Image
           src={dish.image || "/assets/images/lasagna.png"}
           alt={"dish image"}
-          layout="fill"
-          // height={200}
-          // width={200}
-          // style={{ height: "100%", width: "100%" }}
+          // layout="fill"
+          height={200}
+          width={200}
+          style={{ height: "100%", width: "100%" }}
         />
         {/* </div> */}
       </div>
