@@ -10,7 +10,7 @@ import { ICategories, IDish } from "@/interfaces";
 import DishDisplay from "@/components/dishDisplay";
 import Cart from "@/components/cart";
 import useStore from "@/store";
-import { getMenu } from "@/services/api";
+import { getMenu, getPastOrders } from "@/services/api";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -184,6 +184,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       const { menu, name } = await getMenu();
+      const { orders } = await getPastOrders();
       setMenu(menu);
       setRestaurantName(name);
       setFirstLoad(false);
