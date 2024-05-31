@@ -40,7 +40,7 @@ const DishDisplay = ({
             <h2 className="font-bold font-sans text-lg capitalize">
               {dish.name}
               <Image
-                src={`/assets/images/${dish.veg ? "veg" : "non-veg"}-icon.png`}
+                src={`/assets/images/${dish.veg ? "veg" : "non-veg"}-icon.jpg`}
                 alt={"veg-non-veg"}
                 className="inline-block ml-2"
                 height={15}

@@ -1,4 +1,5 @@
 "use client";
+import useStore from "@/store";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   useState,
@@ -13,6 +14,7 @@ import {
 const PaymentComponent = () => {
   const [hash, setHash] = useState("");
   const searchParams = useSearchParams();
+  const { restaurantName } = useStore();
   const router = useRouter();
   const formRef = useRef<any>();
   const generateTxnId = () => {
@@ -49,9 +51,11 @@ const PaymentComponent = () => {
     () => ({
       txnid, // String
       amount: searchParams.get("amount") || "0", // Float
-      productinfo: "food", // String
+      productinfo: searchParams.get("productinfo") || "", // String
       firstname: searchParams.get("firstname") || "", // String
       email: searchParams.get("email") || "", // String
+      udf1: searchParams.get("id") || "",
+      udf2: restaurantName,
     }),
     []
   );
@@ -83,6 +87,8 @@ const PaymentComponent = () => {
       <input type="hidden" name="email" value={data.email} />
       <input type="hidden" name="firstname" value={data.firstname} />
       <input type="hidden" name="hash" value={hash} />
+      <input type="hidden" name="udf1" value={searchParams.get("id") || ""} />
+      <input type="hidden" name="udf2" value={restaurantName} />
       <input
         type="hidden"
         name="lastname"

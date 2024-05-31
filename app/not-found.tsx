@@ -1,7 +1,9 @@
+import BackButton from "@/components/backButton";
 import Image from "next/image";
 import React from "react";
 
 const NotFound = () => {
+  // const
   return (
     <div className="flex justify-center items-center flex-1 w-full flex-col font-manrope">
       <Image
@@ -26,6 +28,7 @@ const NotFound = () => {
           Don{"'"}t worry Just Take a Break or Try Reloading
         </p>
       </div>
+      <BackButton />
     </div>
   );
 };
