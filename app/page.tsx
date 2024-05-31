@@ -248,7 +248,7 @@ export default function Home() {
         <CustomLink active={false} text={"Asian"} />
         <CustomLink active={false} text={"Continental"} /> */}
       </div>
-      <div className="flex justify-around items-stretch gap-y-10 w-full flex-wrap">
+      <div className="flex justify-around items-stretch gap-y-12 w-full flex-wrap">
         {menu?.[activeCategory]?.dishes?.map((dish: IDish) => (
           <DishCard dish={dish} imageOverflow key={dish._id} />
         ))}

@@ -2,6 +2,7 @@ import { IDish } from "@/interfaces";
 import useStore from "@/store";
 import Image from "next/image";
 import React from "react";
+import Counter from "./counter";
 
 const DishCard = ({
   dish,
@@ -10,14 +11,15 @@ const DishCard = ({
   dish: IDish;
   imageOverflow?: boolean;
 }) => {
-  const setActiveDish = useStore((state) => state.setActiveDish);
+  const { setActiveDish, cart, onAdd, onRemove } = useStore();
+
   return (
     <div
-      className={` py-2 px-0 rounded-xl relative ${
+      className={` pb-3 px-0 rounded-xl relative ${
         imageOverflow
-          ? "bg-primary min-w-[30vw] w-[38vw]"
+          ? "bg-primary min-w-[30vw] w-[37vw]"
           : "bg-white min-w-[37vw]"
-      } flex flex-col justify-between items-center font-mono text-black gap-3`}
+      } flex flex-col justify-between items-center font-mono text-black gap-2`}
       style={{
         boxShadow: imageOverflow
           ? "rgba(0, 0, 0, 0.25) -8px 8px 10px -10px"
@@ -26,7 +28,7 @@ const DishCard = ({
       onClick={() => setActiveDish(dish)}
     >
       <div
-        className={`rounded-full overflow-hidden  relative ${
+        className={`overflow-hidden rounded-full relative ${
           imageOverflow ? "mb-[-2vh] top-[-4vh]" : ""
         }`}
         style={{
@@ -41,14 +43,15 @@ const DishCard = ({
         <Image
           src={dish.image || "/assets/images/lasagna.png"}
           alt={"dish image"}
+          // layout="fill"
           height={200}
           width={200}
-          style={{ height: "100%" }}
+          style={{ height: "100%", width: "100%" }}
         />
         {/* </div> */}
       </div>
-      <div className="flex flex-col gap-0 items-center justify-center">
-        <p className="font-black text-sm capitalize w-[100%] text-center">
+      <div className="flex flex-col gap-[1vh] items-start justify-center w-full px-2">
+        <p className="font-black text-sm capitalize text-center">
           {dish.name}
           <Image
             src={`/assets/images/${dish.veg ? "veg" : "non-veg"}-icon.png`}
@@ -58,7 +61,59 @@ const DishCard = ({
             width={11}
           />
         </p>
-        <p className="text-xs font-light">₹{dish.price}</p>
+        <p
+          className="text-xs font-extralight flex items-center justify-between w-full"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          ₹{dish.price}
+          {cart?.[dish.name]?.qty ? (
+            <div className="bg-[#FF9633] border border-transparent text-white rounded-md py-1 text-xs font-bold shadow-custom flex items-center justify-between w-[14vw] px-1">
+              <button onClick={() => onRemove(dish)}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="w-2.5"
+                    stroke-width="2"
+                    d="M20 12H4"
+                  ></path>
+                </svg>
+              </button>
+              <span>{cart?.[dish.name]?.qty}</span>
+              <button onClick={() => onAdd(dish)}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v12m0-6h6m-6 0H6"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          ) : (
+            <button
+              className="border-[#FF9633] border text-[#FF9633] rounded-md py-1 px-3 text-xs font-semibold w-[14vw]"
+              onClick={() => onAdd(dish)}
+            >
+              ADD
+            </button>
+          )}
+        </p>
       </div>
     </div>
   );
