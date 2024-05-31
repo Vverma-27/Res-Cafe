@@ -4,6 +4,7 @@ import CartItem from "./cartItem";
 import useStore from "@/store";
 import Modal from "./modal";
 import { BiArrowBack } from "react-icons/bi";
+import { createClient } from "@/services/api";
 
 const Cart = () => {
   const cart = useStore((state) => state.cart);
@@ -142,10 +143,12 @@ const Cart = () => {
           <div className=" mt-4 flex justify-start gap-2">
             <button
               className="bg-[#FF9633] py-3.5 px-10 text-white rounded-xl text-sm"
-              onClick={() => {
+              onClick={async () => {
                 localStorage?.setItem("name", name);
                 localStorage?.setItem("email", email);
                 localStorage?.setItem("number", number);
+                const { id } = await createClient({ email, name, number });
+                // console.log("🚀 ~ onClick={ ~ id:", res);
                 router.push(
                   "/payment?" +
                     new URLSearchParams({
@@ -154,6 +157,10 @@ const Cart = () => {
                       amount: (1.21 * total).toFixed(2),
                       email,
                       number,
+                      id,
+                      productinfo: Object.values(cart)
+                        .map((d) => `${d.qty}x${d.dish.name}`)
+                        .join(","),
                     }).toString()
                 );
               }}

@@ -18,7 +18,7 @@ const SearchItem = ({ dish }: { dish: IDish }) => {
       </div>
       <p className="text-right flex-1 text-sm font-light">₹{dish.price}</p>
       <Image
-        src={`/assets/images/${dish.veg ? "veg" : "non-veg"}-icon.png`}
+        src={`/assets/images/${dish.veg ? "veg" : "non-veg"}-icon.jpg`}
         alt="veg icon"
         width={10}
         height={10}

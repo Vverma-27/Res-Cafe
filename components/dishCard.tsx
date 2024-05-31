@@ -54,7 +54,7 @@ const DishCard = ({
         <p className="font-black text-sm capitalize text-center">
           {dish.name}
           <Image
-            src={`/assets/images/${dish.veg ? "veg" : "non-veg"}-icon.png`}
+            src={`/assets/images/${dish.veg ? "veg" : "non-veg"}-icon.jpg`}
             alt={"veg-non-veg"}
             className="absolute top-2 right-2"
             height={11}
