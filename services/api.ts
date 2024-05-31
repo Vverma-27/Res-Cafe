@@ -4,7 +4,7 @@ export const getMenu = async () => {
       "🚀 ~ getMenu ~ process.env.CLIENT_API_URL:",
       process.env.NEXT_PUBLIC_CLIENT_API_URL
     );
-    const res = await fetch(`${process.env.NEXT_PUBLIC_CLIENT_API_URL}`, {
+    const res = await fetch(`http://api.${location.host}/restaurant/client`, {
       method: "GET",
     });
     const data = await res.json();

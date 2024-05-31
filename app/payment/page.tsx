@@ -29,13 +29,14 @@ const PaymentComponent = () => {
   const paymentReq = useCallback(async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_CLIENT_API_URL}/payment`,
+        `http://api.${location.host}/restaurant/client/payment`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
+          credentials: "include",
         }
       );
       const hash = (await response.json()).hash;
@@ -90,12 +91,12 @@ const PaymentComponent = () => {
       <input
         type="hidden"
         name="surl"
-        value={`${process.env.CLIENT_API_URL}/payment/success`}
+        value={`http://api.${location.host}/restaurant/client/payment/success`}
       />
       <input
         type="hidden"
         name="furl"
-        value={`${process.env.CLIENT_API_URL}/payment/fail`}
+        value={`http://api.${location.host}/restaurant/client/payment/fail`}
       />
       <input
         type="hidden"
