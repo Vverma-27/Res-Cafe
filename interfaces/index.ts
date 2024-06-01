@@ -31,4 +31,6 @@ export interface IStore {
   onRemove: (dish: IDish) => void;
   firstLoad: boolean;
   setFirstLoad: (val: boolean) => void;
+  pastOrders: IDish[];
+  setPastOrders: (orders: IDish[]) => void;
 }

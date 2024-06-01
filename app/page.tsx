@@ -177,14 +177,42 @@ export default function Home() {
     cart,
     firstLoad,
     setFirstLoad,
+    setPastOrders,
+    pastOrders,
   } = useStore();
   const [activeCategory, setActiveCategory] = useState("");
-  // console.log("🚀 ~ onAdd ~ cartOpen:", cartOpen);
+  console.log("🚀 ~ onAdd ~ cartOpen:", pastOrders);
   // const [initalMenu, setInitMenu] = useState({});
   useEffect(() => {
     (async () => {
       const { menu, name } = await getMenu();
       const { orders } = await getPastOrders();
+      console.log("🚀 ~ orders:", orders);
+      const dishFreq: { [name: string]: number } = {};
+      const listOrders = orders.map((e: any) => e.list);
+      listOrders.forEach((e: string) => {
+        const dishesWFreq = e.split(",");
+        dishesWFreq.forEach((dishArg) => {
+          const [freq, dish] = dishArg.split("x");
+          dishFreq[dish] = parseInt(freq);
+        });
+      });
+      const entries = Object.entries(dishFreq);
+      entries.sort((a, b) => b[1] - a[1]);
+      const sortedDishNames = entries.map((entry) => entry[0]);
+      const allDishes: IDish[] = Object.values(menu)
+        .map((cat: any) => {
+          return cat.dishes;
+        })
+        .reduce((acc, curr) => acc.concat(curr), []);
+      const dishes = sortedDishNames
+        .map((name) => {
+          const dish = allDishes.find((d: IDish) => d.name === name);
+          return dish;
+        })
+        .filter((e) => e !== undefined);
+      //@ts-ignore
+      setPastOrders(dishes);
       setMenu(menu);
       setRestaurantName(name);
       setFirstLoad(false);
@@ -228,13 +256,16 @@ export default function Home() {
       <div>
         <h2 className=" text-4xl m-0">Welcome To {restaurantName}!</h2>
         <p>Good food is brewing</p>
+        <div className="mt-4 w-full">
+          <p className="font-bold text-md">Your Favourites</p>
+          <div className="overflow-x-scroll max-w-fit w-[calc(100vw-1rem)] flex p-1 pb-3 justify-between items-center gap-3 no-scrollbar">
+            {pastOrders.map((dish: IDish) => (
+              <DishCard dish={dish} key={dish._id} />
+            ))}
+          </div>
+        </div>
       </div>
-      {/* <div className="flex justify-center items-center gap-[8vh] w-fit text-black">
-        <FeaturedCard />
-        <FeaturedCard />
-        <FeaturedCard />
-      </div> */}
-      <div className="flex px-1 justify-between items-center gap-3 overflow-x-scroll w-full bg-secondary no-scrollbar border border-solid border-[rgba(0,0,0,0.3)]">
+      <div className="flex px-1 mb-3 justify-between items-center gap-3 overflow-x-scroll w-full bg-secondary no-scrollbar border border-solid border-[rgba(0,0,0,0.3)]">
         {Object.keys(menu).map((cat: string) => (
           <CustomLink
             key={cat}

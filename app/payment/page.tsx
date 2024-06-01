@@ -1,4 +1,5 @@
 "use client";
+import { BASE_URL } from "@/services/api";
 import useStore from "@/store";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -30,17 +31,14 @@ const PaymentComponent = () => {
   // This method will generate the hash value
   const paymentReq = useCallback(async () => {
     try {
-      const response = await fetch(
-        `http://api.${location.host}/restaurant/client/payment`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/payment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
       const hash = (await response.json()).hash;
       setHash(hash);
     } catch (error) {
@@ -94,16 +92,8 @@ const PaymentComponent = () => {
         name="lastname"
         value={searchParams.get("lastname") || ""}
       />
-      <input
-        type="hidden"
-        name="surl"
-        value={`http://api.${location.host}/restaurant/client/payment/success`}
-      />
-      <input
-        type="hidden"
-        name="furl"
-        value={`http://api.${location.host}/restaurant/client/payment/fail`}
-      />
+      <input type="hidden" name="surl" value={`${BASE_URL}/payment/success`} />
+      <input type="hidden" name="furl" value={`${BASE_URL}/payment/fail`} />
       <input
         type="hidden"
         name="phone"

@@ -18,7 +18,7 @@ const DishCard = ({
       className={` pb-3 px-0 rounded-xl relative ${
         imageOverflow
           ? "bg-primary min-w-[30vw] w-[37vw]"
-          : "bg-white min-w-[37vw]"
+          : "bg-white min-w-[34vw] pt-2"
       } flex flex-col justify-between items-center font-mono text-black gap-2`}
       style={{
         boxShadow: imageOverflow
@@ -31,10 +31,17 @@ const DishCard = ({
         className={`overflow-hidden rounded-full relative ${
           imageOverflow ? "mb-[-2vh] top-[-4vh]" : ""
         }`}
-        style={{
-          width: "14vh",
-          height: "14vh",
-        }}
+        style={
+          imageOverflow
+            ? {
+                width: "14vh",
+                height: "14vh",
+              }
+            : {
+                width: "10vh",
+                height: "10vh",
+              }
+        }
       >
         {/* <div
           className="relative rounded-full overflow-hidden"

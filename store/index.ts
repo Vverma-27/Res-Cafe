@@ -100,6 +100,8 @@ import { create } from "zustand";
 const useStore = create((set, get: () => IStore) => {
   return {
     menu: {},
+    pastOrders: [],
+    setPastOrders: (orders) => set({ pastOrders: orders }),
     restaurantName: "",
     setRestaurantName: (restaurantName: string) => set({ restaurantName }),
     firstLoad: true,

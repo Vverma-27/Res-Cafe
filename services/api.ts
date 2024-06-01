@@ -1,10 +1,11 @@
+export const BASE_URL = `http://api.${location?.host}/restaurant/client`;
 export const getMenu = async () => {
   try {
     console.log(
       "🚀 ~ getMenu ~ process.env.CLIENT_API_URL:",
       process.env.NEXT_PUBLIC_CLIENT_API_URL
     );
-    const res = await fetch(`http://api.${location.host}/restaurant/client`, {
+    const res = await fetch(BASE_URL, {
       method: "GET",
       credentials: "include",
     });
@@ -21,7 +22,7 @@ export const createClient = async (dataArg: {
   name: string;
 }) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_CLIENT_API_URL}`, {
+    const res = await fetch(`${BASE_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,12 +41,10 @@ export const createClient = async (dataArg: {
 };
 export const getPastOrders = async () => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_CLIENT_API_URL}/orders`,
-      {
-        method: "GET",
-      }
-    );
+    const res = await fetch(`${BASE_URL}/orders`, {
+      method: "GET",
+      credentials: "include",
+    });
     const data = await res.json();
     console.log("🚀 ~ getPastOrders ~ data:", data);
     return data;
