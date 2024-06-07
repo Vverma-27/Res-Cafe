@@ -1,4 +1,3 @@
-"use client";
 import DishCard from "@/components/dishCard";
 import FeaturedCard from "@/components/featuredCard";
 import SearchBar from "@/components/searchBar";

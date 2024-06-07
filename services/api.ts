@@ -1,4 +1,8 @@
-export const BASE_URL = `http://api.${location?.host}/restaurant/client`;
+export const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? `http://api.${location?.host}/restaurant/client`
+    : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
+console.log("🚀 ~ BASE_URL:", BASE_URL);
 export const getMenu = async () => {
   try {
     console.log(

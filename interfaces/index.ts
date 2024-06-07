@@ -20,6 +20,12 @@ export type Cart = {
 };
 export interface IStore {
   menu: Menu;
+  setTable: (id: string | number) => void;
+  table: string | number;
+  clientName: string;
+  setClientName: (name: string) => void;
+  usersAtTable: string[];
+  setUsersAtTable: (a: string[]) => void;
   setMenu: (menu: Menu) => void;
   restaurantName: string;
   setRestaurantName: (name: string) => void;

@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CartItem from "./cartItem";
@@ -7,7 +8,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { createClient } from "@/services/api";
 
 const Cart = () => {
-  const cart = useStore((state) => state.cart);
+  const { cart, table } = useStore();
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
   const [name, setName] = useState("");
@@ -20,7 +21,7 @@ const Cart = () => {
     setNumber(localStorage.getItem("number") || "");
   }, []);
   if (Object.values(cart).length === 0) {
-    router.push("/");
+    router.push("/?table=" + table);
     return null;
   }
 
@@ -33,17 +34,17 @@ const Cart = () => {
       <div className="w-full flex flex-col gap-6 flex-grow overflow-hidden">
         <div className="relative">
           <div
-            onClick={() => router?.push("/")}
+            onClick={() => router?.back()}
             className="flex items-center gap-0.5 cursor-pointer absolute left-0 top-1/2 -translate-y-1/2"
           >
             <BiArrowBack color="black" fontSize={12} />
             <p className="font-bold text-xs">Back</p>
           </div>
-          <h2 className="font-bold font-sans text-lg flex-1 text-center">
+          <h2 className="font-bold opacity-60 font-sans text-sm flex-1 text-center">
             Cart
           </h2>
         </div>
-        <div className="flex flex-col gap-6 w-full overflow-y-auto no-scrollbar">
+        <div className="flex flex-col gap-6 w-full overflow-y-auto no-scrollbar h-full">
           {Object.values(cart).map((item) => (
             <>
               <CartItem
