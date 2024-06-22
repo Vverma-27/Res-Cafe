@@ -21,15 +21,7 @@ const Modal = ({
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-        {notClosable ? (
-          <button
-            className="absolute top-0 right-0 mt-2 mr-2"
-            onClick={onClose}
-          >
-            &times;
-          </button>
-        ) : null}
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
         {children}
       </div>
     </div>

@@ -187,6 +187,10 @@ export default function Home() {
     pastOrders,
     clientName,
     setClientName,
+    addReq,
+    addSharer,
+    setSocket,
+    setNumSplitters,
   } = useStore();
   const [activeCategory, setActiveCategory] = useState("");
   const [name, setName] = useState("");
@@ -206,10 +210,21 @@ export default function Home() {
     const socket = getSocket(table, clientName);
     socket.connect();
     socket.on("connect", () => {
+      setSocket(socket);
       console.log("Connected to server");
     });
     socket.on("users", (e) => {
       setUsersAtTable(e.filter((e) => e !== clientName));
+    });
+    socket.on("share-req", (e) => {
+      console.log("🚀 ~ socket.on ~ e:", e);
+      addReq(e);
+    });
+    socket.on("accept-req", (e) => {
+      addSharer(e.dish, e.name);
+    });
+    socket.on("update-splitters", (e) => {
+      setNumSplitters(e.dish, e.numSplitters);
     });
     socket.on("disconnect", () => {
       console.log("Disconnected from server");
