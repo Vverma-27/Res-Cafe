@@ -11,7 +11,10 @@ import DishDisplay from "@/components/dishDisplay";
 import Cart from "@/components/cart";
 import useStore from "@/store";
 import { getMenu, getPastOrders } from "@/services/api";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { io } from "socket.io-client";
+import Modal from "@/components/modal";
+import { getSocket } from "@/services/socket";
 
 export default function Home() {
   // const [cartOpen, setCartOpen] = useState(true);
@@ -178,19 +181,66 @@ export default function Home() {
     firstLoad,
     setFirstLoad,
     setPastOrders,
+    setUsersAtTable,
+    table,
+    setTable,
     pastOrders,
+    clientName,
+    setClientName,
+    addReq,
+    addSharer,
+    setSocket,
+    setNumSplitters,
   } = useStore();
   const [activeCategory, setActiveCategory] = useState("");
-  console.log("🚀 ~ onAdd ~ cartOpen:", pastOrders);
+  const [name, setName] = useState("");
+  const searchParams = useSearchParams();
   // const [initalMenu, setInitMenu] = useState({});
+  useEffect(() => {
+    if (!table || !clientName) return;
+    console.log("🚀 ~ useEffect ~ table:", table, clientName);
+    // const socket = io("ws://localhost:3000/", {
+    //   reconnectionDelayMax: 10000,
+    //   query: {
+    //     table: `${table}`,
+    //     name: `${clientName}`,
+    //   },
+    //   transports: ["websocket", "polling"],
+    // });
+    const socket = getSocket(table, clientName);
+    socket.connect();
+    socket.on("connect", () => {
+      setSocket(socket);
+      console.log("Connected to server");
+    });
+    socket.on("users", (e) => {
+      setUsersAtTable(e.filter((e) => e !== clientName));
+    });
+    socket.on("share-req", (e) => {
+      console.log("🚀 ~ socket.on ~ e:", e);
+      addReq(e);
+    });
+    socket.on("accept-req", (e) => {
+      addSharer(e.dish, e.name);
+    });
+    socket.on("update-splitters", (e) => {
+      setNumSplitters(e.dish, e.numSplitters);
+    });
+    socket.on("disconnect", () => {
+      console.log("Disconnected from server");
+    });
+    // return () => {
+    //   socket.disconnect();
+    // };
+  }, [table, clientName]);
   useEffect(() => {
     (async () => {
       const { menu, name } = await getMenu();
       const { orders } = await getPastOrders();
       console.log("🚀 ~ orders:", orders);
       const dishFreq: { [name: string]: number } = {};
-      const listOrders = orders.map((e: any) => e.list);
-      listOrders.forEach((e: string) => {
+      const listOrders = orders?.map((e: any) => e.list);
+      listOrders?.forEach((e: string) => {
         const dishesWFreq = e.split(",");
         dishesWFreq.forEach((dishArg) => {
           const [freq, dish] = dishArg.split("x");
@@ -215,6 +265,8 @@ export default function Home() {
       setPastOrders(dishes);
       setMenu(menu);
       setRestaurantName(name);
+      const table = searchParams.get("table");
+      setTable(table || "");
       setFirstLoad(false);
     })();
   }, [setMenu]);
@@ -222,7 +274,14 @@ export default function Home() {
     if (menu && Object.keys(menu).length)
       setActiveCategory(Object.keys(menu)[0]);
   }, [menu]);
-  if (!restaurantName && !firstLoad) {
+  useEffect(() => {
+    // Only run this code on the client side
+    if (localStorage.getItem("name")) {
+      setName(localStorage.getItem("name") as string);
+      setClientName(localStorage.getItem("name") as string);
+    }
+  }, []);
+  if ((!restaurantName || !table) && !firstLoad) {
     router.push("/404");
     return null;
   }
@@ -256,14 +315,17 @@ export default function Home() {
       <div>
         <h2 className=" text-4xl m-0">Welcome To {restaurantName}!</h2>
         <p>Good food is brewing</p>
-        <div className="mt-4 w-full">
-          <p className="font-bold text-md">Your Favourites</p>
-          <div className="overflow-x-scroll max-w-fit w-[calc(100vw-1rem)] flex p-1 pb-3 justify-between items-center gap-3 no-scrollbar">
-            {pastOrders.map((dish: IDish) => (
-              <DishCard dish={dish} key={dish._id} />
-            ))}
+        {(pastOrders.length && (
+          <div className="mt-4 w-full">
+            <p className="font-bold text-md">Your Favourites</p>
+            <div className="overflow-x-scroll max-w-fit w-[calc(100vw-1rem)] flex p-1 pb-3 justify-between items-center gap-3 no-scrollbar">
+              {pastOrders?.map((dish: IDish) => (
+                <DishCard dish={dish} key={dish._id} />
+              ))}
+            </div>
           </div>
-        </div>
+        )) ||
+          null}
       </div>
       <div className="flex px-1 mb-3 justify-between items-center gap-3 overflow-x-scroll w-full bg-secondary no-scrollbar border border-solid border-[rgba(0,0,0,0.3)]">
         {Object.keys(menu).map((cat: string) => (
@@ -292,6 +354,53 @@ export default function Home() {
           qty={cart[activeDish.name]?.qty || 0}
         />
       )}
+      <Modal isOpen={!Boolean(clientName)} notClosable>
+        <div className="w-full flex flex-col gap-2 flex-grow overflow-hidden">
+          <h2 className="font-semibold font-sans text-md">Contact Details</h2>
+          <div className="flex flex-col gap-2 w-full">
+            <div className="flex flex-col">
+              <label htmlFor="name" className="font-bold text-xs">
+                Name
+              </label>
+              <input
+                type="text"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                className="bg-transparent rounded-lg text-sm font-semibold py-2 px-1 border-2"
+                name="name"
+                placeholder="Enter your name"
+                required
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="Table Number" className="font-bold text-xs">
+                Table Number
+              </label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  e.preventDefault();
+                }}
+                value={table}
+                className="bg-transparent rounded-lg text-sm font-semibold py-2 px-1 border-2"
+                name="Table Number"
+                disabled
+              />
+            </div>
+          </div>
+          <div className=" mt-4 flex justify-start gap-2">
+            <button
+              className="bg-[#FF9633] py-3.5 px-10 text-white rounded-xl text-sm"
+              onClick={async () => {
+                localStorage?.setItem("name", name);
+                setClientName(name);
+              }}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

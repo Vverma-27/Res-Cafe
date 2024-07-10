@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CartItem from "./cartItem";
@@ -7,7 +8,8 @@ import { BiArrowBack } from "react-icons/bi";
 import { createClient } from "@/services/api";
 
 const Cart = () => {
-  const cart = useStore((state) => state.cart);
+  const { cart, table } = useStore();
+  console.log("🚀 ~ cart:", cart);
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
   const [name, setName] = useState("");
@@ -20,11 +22,12 @@ const Cart = () => {
     setNumber(localStorage.getItem("number") || "");
   }, []);
   if (Object.values(cart).length === 0) {
-    router.push("/");
+    router.push("/?table=" + table);
     return null;
   }
 
   const total = Object.values(cart)
+    ?.filter((e) => e.dish !== undefined)
     ?.map((e) => e.dish.price * e.qty)
     ?.reduce((prev, curr) => prev + curr, 0);
 
@@ -33,26 +36,30 @@ const Cart = () => {
       <div className="w-full flex flex-col gap-6 flex-grow overflow-hidden">
         <div className="relative">
           <div
-            onClick={() => router?.push("/")}
-            className="flex items-center gap-0.5 cursor-pointer absolute left-0 top-1/2 -translate-y-1/2"
+            onClick={() => router?.back()}
+            className="flex items-center gap-0.5 cursor-pointer absolute left-0 top-1/2 -translate-y-1/2 z-[1]"
           >
             <BiArrowBack color="black" fontSize={12} />
             <p className="font-bold text-xs">Back</p>
           </div>
-          <h2 className="font-bold font-sans text-lg flex-1 text-center">
+          <h2 className="font-bold opacity-60 font-sans text-sm flex-1 text-center">
             Cart
           </h2>
         </div>
-        <div className="flex flex-col gap-6 w-full overflow-y-auto no-scrollbar">
-          {Object.values(cart).map((item) => (
-            <>
-              <CartItem
-                key={item.dish.name} // Ensure each CartItem has a unique key
-                dish={item.dish}
-                qty={item.qty}
-              />
-            </>
-          ))}
+        <div className="flex flex-col gap-6 w-full overflow-y-auto no-scrollbar h-full">
+          {Object.values(cart).map((item) =>
+            item.dish ? (
+              <>
+                <CartItem
+                  key={item.dish.name} // Ensure each CartItem has a unique key
+                  dish={item.dish}
+                  qty={item.qty}
+                  shared={item.shared || ""}
+                  numSplitters={item.numSplitters || 0}
+                />
+              </>
+            ) : null
+          )}
         </div>
       </div>
       <div className="flex flex-col gap-2 w-full flex-shrink-0 p-4 pb-0 shadow-lg">

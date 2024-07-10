@@ -6,6 +6,7 @@ import { IoFastFoodOutline } from "react-icons/io5";
 import useStore from "@/store";
 import Header from "@/components/header";
 import { headers } from "next/headers";
+import ShareModals from "@/components/shareModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +37,7 @@ export default function RootLayout({
       >
         {pathname === "/payment" ? null : <Header />}
         {children}
+        <ShareModals />
       </body>
     </html>
   );
