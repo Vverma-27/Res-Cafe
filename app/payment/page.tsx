@@ -1,5 +1,4 @@
 "use client";
-import { BASE_URL } from "@/services/api";
 import useStore from "@/store";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -12,7 +11,6 @@ import {
   Suspense,
 } from "react";
 import { initializeSDK } from "../../services/cashfree";
-
 const PaymentComponent = () => {
   const [hash, setHash] = useState("");
   const [sessionId, setSessionId] = useState("");
@@ -33,6 +31,10 @@ const PaymentComponent = () => {
   // This method will generate the hash value
   const paymentReq = useCallback(async () => {
     try {
+      const BASE_URL =
+        process.env.NODE_ENV === "production"
+          ? `http://api.${location?.host}/restaurant/client`
+          : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
       const response = await fetch(`${BASE_URL}/payment`, {
         method: "POST",
         headers: {
@@ -49,6 +51,10 @@ const PaymentComponent = () => {
   }, []);
   const paymentReqCashfree = async () => {
     try {
+      const BASE_URL =
+        process.env.NODE_ENV === "production"
+          ? `http://api.${location?.host}/restaurant/client`
+          : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
       const response = await fetch(`${BASE_URL}/payment/order`, {
         method: "POST",
         headers: {
@@ -130,35 +136,35 @@ const PaymentComponent = () => {
       <span className="sr-only">Loading...</span>
     </div>
   );
-  return (
-    <form action={process.env.NEXT_PUBLIC_PAYU_URL} method="post" ref={formRef}>
-      <input
-        type="hidden"
-        name="key"
-        value={process.env.NEXT_PUBLIC_PAYU_KEY}
-      />
-      <input type="hidden" name="txnid" value={txnid} />
-      <input type="hidden" name="productinfo" value={data.productinfo} />
-      <input type="hidden" name="amount" value={data.amount} />
-      <input type="hidden" name="email" value={data.email} />
-      {/* <input type="hidden" name="firstname" value={data.firstname} /> */}
-      <input type="hidden" name="hash" value={hash} />
-      <input type="hidden" name="udf1" value={searchParams.get("id") || ""} />
-      <input type="hidden" name="udf2" value={restaurantName} />
-      <input
-        type="hidden"
-        name="lastname"
-        value={searchParams.get("lastname") || ""}
-      />
-      <input type="hidden" name="surl" value={`${BASE_URL}/payment/success`} />
-      <input type="hidden" name="furl" value={`${BASE_URL}/payment/fail`} />
-      <input
-        type="hidden"
-        name="phone"
-        value={searchParams.get("number") || ""}
-      />
-    </form>
-  );
+  // return (
+  //   <form action={process.env.NEXT_PUBLIC_PAYU_URL} method="post" ref={formRef}>
+  //     <input
+  //       type="hidden"
+  //       name="key"
+  //       value={process.env.NEXT_PUBLIC_PAYU_KEY}
+  //     />
+  //     <input type="hidden" name="txnid" value={txnid} />
+  //     <input type="hidden" name="productinfo" value={data.productinfo} />
+  //     <input type="hidden" name="amount" value={data.amount} />
+  //     <input type="hidden" name="email" value={data.email} />
+  //     {/* <input type="hidden" name="firstname" value={data.firstname} /> */}
+  //     <input type="hidden" name="hash" value={hash} />
+  //     <input type="hidden" name="udf1" value={searchParams.get("id") || ""} />
+  //     <input type="hidden" name="udf2" value={restaurantName} />
+  //     <input
+  //       type="hidden"
+  //       name="lastname"
+  //       value={searchParams.get("lastname") || ""}
+  //     />
+  //     <input type="hidden" name="surl" value={`${BASE_URL}/payment/success`} />
+  //     <input type="hidden" name="furl" value={`${BASE_URL}/payment/fail`} />
+  //     <input
+  //       type="hidden"
+  //       name="phone"
+  //       value={searchParams.get("number") || ""}
+  //     />
+  //   </form>
+  // );
 };
 const PaymentPage = () => (
   <Suspense fallback={<div>Loading...</div>}>
