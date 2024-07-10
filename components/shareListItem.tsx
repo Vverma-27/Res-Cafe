@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 
 const ShareListItem = ({
   name,
-  status,
   bg,
+  onClick,
 }: {
   name: string;
-  status: "req" | "acc" | "den";
   bg: string;
+  onClick: () => void;
 }) => {
+  const [status, setStatus] = useState<"req" | "acc" | "pending">("req");
   return (
-    <div className="flex text-black items-start space-x-1 font-inria">
+    <div
+      className="flex text-black items-start space-x-1 font-inria"
+      onClick={() => {
+        onClick();
+        setStatus("pending");
+      }}
+    >
       <div
         className={`aspect-square rounded-full  h-[30px] w-[30px]  ${bg} flex justify-center items-center text-sm font-light text-white font-inter`}
       >
@@ -39,7 +46,7 @@ const ShareListItem = ({
             ? "Request"
             : status === "acc"
             ? "Accepted"
-            : "Denied"}
+            : "Pending"}
           {/* </span> */}
         </button>
       </div>

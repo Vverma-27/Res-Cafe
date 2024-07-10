@@ -1,3 +1,5 @@
+import { Socket } from "socket.io-client";
+
 export interface IRestaurant {
   menu: ICategories[];
   name: string;
@@ -16,12 +18,36 @@ export interface IDish {
   image?: string;
 }
 export type Cart = {
-  [name: string]: { dish: IDish; qty: number };
+  [name: string]: {
+    dish: IDish;
+    qty: number;
+    shared?: string;
+    numSplitters?: number;
+  };
 };
+export interface IShareReq {
+  name: string;
+  dish: string;
+  price: number;
+  image: string;
+  veg: boolean;
+  _id: string;
+  numSplitters: number;
+}
 export interface IStore {
   menu: Menu;
+  socket: Socket | null;
+  setSocket: (socket: Socket) => void;
   setTable: (id: string | number) => void;
+  setNumSplitters: (dish: string, splitters: number) => void;
   table: string | number;
+  shareReqs: IShareReq[];
+  addReq: (req: IShareReq) => void;
+  removeReq: () => void;
+  // setShareList: (list: { dish: string; sharers: string[] }[]) => void;
+  addSharer: (dish: string, sharer: string) => void;
+  removeSharer: (dish: string, sharer: string) => void;
+  shareList: { [name: string]: string[] };
   clientName: string;
   setClientName: (name: string) => void;
   usersAtTable: string[];
@@ -33,7 +59,7 @@ export interface IStore {
   setActiveDish: (activeDish: IDish | null) => void;
   cart: Cart;
   setCart: (cart: Cart) => void;
-  onAdd: (dish: IDish) => void;
+  onAdd: (dish: IDish, shared?: string, numSplitters?: number) => void;
   onRemove: (dish: IDish) => void;
   firstLoad: boolean;
   setFirstLoad: (val: boolean) => void;

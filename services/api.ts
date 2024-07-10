@@ -1,9 +1,8 @@
-export const BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? `http://api.${location?.host}/restaurant/client`
-    : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
-console.log("🚀 ~ BASE_URL:", BASE_URL);
 export const getMenu = async () => {
+  const BASE_URL =
+    process.env.NODE_ENV === "production"
+      ? `http://api.${location?.host}/restaurant/client`
+      : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
   try {
     console.log(
       "🚀 ~ getMenu ~ process.env.CLIENT_API_URL:",
@@ -26,6 +25,10 @@ export const createClient = async (dataArg: {
   name: string;
 }) => {
   try {
+    const BASE_URL =
+      process.env.NODE_ENV === "production"
+        ? `http://api.${location?.host}/restaurant/client`
+        : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
     const res = await fetch(`${BASE_URL}`, {
       method: "POST",
       headers: {
@@ -45,6 +48,10 @@ export const createClient = async (dataArg: {
 };
 export const getPastOrders = async () => {
   try {
+    const BASE_URL =
+      process.env.NODE_ENV === "production"
+        ? `http://api.${location?.host}/restaurant/client`
+        : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
     const res = await fetch(`${BASE_URL}/orders`, {
       method: "GET",
       credentials: "include",
