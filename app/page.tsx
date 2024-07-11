@@ -214,7 +214,7 @@ export default function Home() {
       console.log("Connected to server");
     });
     socket.on("users", (e) => {
-      setUsersAtTable(e.filter((e) => e !== clientName));
+      setUsersAtTable(e.filter((e: any) => e !== clientName));
     });
     socket.on("share-req", (e) => {
       console.log("🚀 ~ socket.on ~ e:", e);
@@ -232,7 +232,15 @@ export default function Home() {
     // return () => {
     //   socket.disconnect();
     // };
-  }, [table, clientName]);
+  }, [
+    table,
+    clientName,
+    addReq,
+    addSharer,
+    setNumSplitters,
+    setSocket,
+    setUsersAtTable,
+  ]);
   useEffect(() => {
     (async () => {
       const { menu, name } = await getMenu();
@@ -269,7 +277,15 @@ export default function Home() {
       setTable(table || "");
       setFirstLoad(false);
     })();
-  }, [setMenu]);
+  }, [
+    setMenu,
+    searchParams,
+    setFirstLoad,
+    setPastOrders,
+    setRestaurantName,
+    setTable,
+    setClientName,
+  ]);
   useEffect(() => {
     if (menu && Object.keys(menu).length)
       setActiveCategory(Object.keys(menu)[0]);
@@ -280,7 +296,7 @@ export default function Home() {
       setName(localStorage.getItem("name") as string);
       setClientName(localStorage.getItem("name") as string);
     }
-  }, []);
+  }, [setClientName]);
   if ((!restaurantName || !table) && !firstLoad) {
     router.push("/404");
     return null;

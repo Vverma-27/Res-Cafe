@@ -61,6 +61,7 @@ const CartItem = ({
               <div className="flex justify-center items-center gap-1">
                 {shareList[dish.name]?.map((name, i) => (
                   <div
+                    key={i}
                     className={`aspect-square rounded-full  h-[16px] w-[16px]  ${
                       colors[i % 4]
                     } flex justify-center items-center text-[0.4rem] font-light text-white font-inter`}

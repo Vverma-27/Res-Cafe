@@ -11,13 +11,14 @@ const Modal = ({
   children: JSX.Element;
   notClosable?: boolean;
 }) => {
-  if (!isOpen) return null;
   useEffect(() => {
+    if (!isOpen) return;
     document.body.style.overflowY = "hidden";
     return () => {
       document.body.style.overflowY = "scroll";
     };
-  }, []);
+  }, [isOpen]);
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">

@@ -14,7 +14,7 @@ const ShareModals = () => {
       {shareReqs
         .reverse()
         .map(({ name, image, price, dish, veg, _id, numSplitters }, i) => (
-          <Modal isOpen={true}>
+          <Modal isOpen={true} key={i}>
             <>
               <div className="flex justify-center">
                 <Image

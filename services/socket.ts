@@ -5,7 +5,7 @@ const URL =
   process.env.NODE_ENV === "production" ? undefined : "ws://localhost:3000/";
 
 export const getSocket = (table: string | number, clientName: string) =>
-  io(URL, {
+  io(URL || "", {
     reconnectionDelayMax: 10000,
     autoConnect: false,
     query: {

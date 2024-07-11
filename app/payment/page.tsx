@@ -29,27 +29,41 @@ const PaymentComponent = () => {
   };
   const txnid = useMemo(() => generateTxnId(), []);
   // This method will generate the hash value
-  const paymentReq = useCallback(async () => {
-    try {
-      const BASE_URL =
-        process.env.NODE_ENV === "production"
-          ? `http://api.${location?.host}/restaurant/client`
-          : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
-      const response = await fetch(`${BASE_URL}/payment`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
-      const hash = (await response.json()).hash;
-      setHash(hash);
-    } catch (error) {
-      console.log("Payment Error:", error);
-    }
-  }, []);
-  const paymentReqCashfree = async () => {
+  // const paymentReq = useCallback(async () => {
+  //   try {
+  //     const BASE_URL =
+  //       process.env.NODE_ENV === "production"
+  //         ? `http://api.${location?.host}/restaurant/client`
+  //         : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
+  //     const response = await fetch(`${BASE_URL}/payment`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(data),
+  //       credentials: "include",
+  //     });
+  //     const hash = (await response.json()).hash;
+  //     setHash(hash);
+  //   } catch (error) {
+  //     console.log("Payment Error:", error);
+  //   }
+  // }, []);
+  const data = useMemo(
+    () => ({
+      txnid, // String
+      amount: searchParams.get("amount") || "0", // Float
+      productinfo: searchParams.get("productinfo") || "", // String
+      name:
+        (searchParams.get("firstname") || "") +
+        (searchParams.get("lastname") || ""), // String
+      email: searchParams.get("email") || "", // String
+      customer_id: searchParams.get("id") || "",
+      number: searchParams.get("number") || "",
+    }),
+    [searchParams, txnid]
+  );
+  const paymentReqCashfree = useCallback(async () => {
     try {
       const BASE_URL =
         process.env.NODE_ENV === "production"
@@ -68,26 +82,15 @@ const PaymentComponent = () => {
     } catch (error) {
       console.log("Payment Error:", error);
     }
-  };
-  const data = useMemo(
-    () => ({
-      txnid, // String
-      amount: searchParams.get("amount") || "0", // Float
-      productinfo: searchParams.get("productinfo") || "", // String
-      name:
-        (searchParams.get("firstname") || "") +
-        (searchParams.get("lastname") || ""), // String
-      email: searchParams.get("email") || "", // String
-      customer_id: searchParams.get("id") || "",
-      number: searchParams.get("number") || "",
-    }),
-    []
-  );
+  }, [data]);
+  // useEffect(() => {
+
+  // }, [paymentReqCashfree, sessionId]);
   useEffect(() => {
-    if (!sessionId) paymentReqCashfree();
-  }, []);
-  useEffect(() => {
-    if (!sessionId) return;
+    if (!sessionId) {
+      paymentReqCashfree();
+      return;
+    }
     (async () => {
       const cashfree = await initializeSDK();
       cashfree.checkout({
@@ -95,7 +98,7 @@ const PaymentComponent = () => {
         redirectTarget: "_self", //optional ( _self, _blank, or _top)
       });
     })();
-  }, [sessionId]);
+  }, [paymentReqCashfree, sessionId]);
   // useEffect(() => {
   //   paymentReq();
   // }, [paymentReq]);
