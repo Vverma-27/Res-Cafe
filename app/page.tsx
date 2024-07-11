@@ -263,7 +263,7 @@ export default function Home() {
           return dish;
         })
         .filter((e) => e !== undefined);
-      //@ts-expect-error
+      //@ts-ignore
       setPastOrders(dishes);
       setMenu(menu);
       setRestaurantName(name);
