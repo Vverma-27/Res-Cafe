@@ -1,23 +1,11 @@
 "use client";
-import useStore from "@/store";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  RefObject,
-  useCallback,
-  Suspense,
-} from "react";
+import { useState, useEffect, useMemo, useCallback, Suspense } from "react";
 import { initializeSDK } from "../../services/cashfree";
 const PaymentComponent = () => {
-  const [hash, setHash] = useState("");
   const [sessionId, setSessionId] = useState("");
   const searchParams = useSearchParams();
-  const { restaurantName } = useStore();
   const router = useRouter();
-  const formRef = useRef<any>();
   const generateTxnId = () => {
     const now = new Date();
     const timestamp = Date.now(); // Current timestamp in milliseconds

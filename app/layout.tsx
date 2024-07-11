@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import SearchBar from "@/components/searchBar";
-import { IoFastFoodOutline } from "react-icons/io5";
-import useStore from "@/store";
 import Header from "@/components/header";
 import { headers } from "next/headers";
 import ShareModals from "@/components/shareModal";

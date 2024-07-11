@@ -1,18 +1,12 @@
 "use client";
 import DishCard from "@/components/dishCard";
-import FeaturedCard from "@/components/featuredCard";
-import SearchBar from "@/components/searchBar";
-import { IoFastFoodOutline } from "react-icons/io5";
-import Image from "next/image";
 import CustomLink from "@/components/link";
 import { useEffect, useState } from "react";
-import { ICategories, IDish } from "@/interfaces";
+import { IDish } from "@/interfaces";
 import DishDisplay from "@/components/dishDisplay";
-import Cart from "@/components/cart";
 import useStore from "@/store";
 import { getMenu, getPastOrders } from "@/services/api";
 import { useRouter, useSearchParams } from "next/navigation";
-import { io } from "socket.io-client";
 import Modal from "@/components/modal";
 import { getSocket } from "@/services/socket";
 
@@ -269,7 +263,7 @@ export default function Home() {
           return dish;
         })
         .filter((e) => e !== undefined);
-      //@ts-ignore
+      //@ts-expect-error
       setPastOrders(dishes);
       setMenu(menu);
       setRestaurantName(name);
