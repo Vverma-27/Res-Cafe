@@ -166,7 +166,7 @@ const Cart = () => {
                       number,
                       id,
                       productinfo: Object.values(cart)
-                        .map((d) => `${d.qty}x${d.dish.name}`)
+                        .map((d) => `${d.qty}x${d.dish._id}`)
                         .join(","),
                     }).toString()
                 );

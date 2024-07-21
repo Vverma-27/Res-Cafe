@@ -52,6 +52,7 @@ const DishDisplay = ({
             </p>
           </div>
           <Counter
+            unavailable={dish.unavailable}
             onAdd={() => {
               onAdd(dish);
             }}

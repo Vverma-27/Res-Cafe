@@ -151,6 +151,7 @@ const CartItem = ({
           </button>
         ) : (
           <Counter
+            unavailable={dish.unavailable}
             onAdd={() => {
               onAdd(dish);
             }}

@@ -8,7 +8,7 @@ import useStore from "@/store";
 import { getMenu, getPastOrders } from "@/services/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import Modal from "@/components/modal";
-import { getSocket } from "@/services/socket";
+import { getDefaultSocket, getRestaurantSocket } from "@/services/socket";
 
 export default function Home() {
   // const [cartOpen, setCartOpen] = useState(true);
@@ -191,7 +191,7 @@ export default function Home() {
   const searchParams = useSearchParams();
   // const [initalMenu, setInitMenu] = useState({});
   useEffect(() => {
-    if (!table || !clientName) return;
+    if (!table || !clientName || !restaurantName) return;
     console.log("🚀 ~ useEffect ~ table:", table, clientName);
     // const socket = io("ws://localhost:3000/", {
     //   reconnectionDelayMax: 10000,
@@ -201,33 +201,88 @@ export default function Home() {
     //   },
     //   transports: ["websocket", "polling"],
     // });
-    const socket = getSocket(table, clientName);
-    socket.connect();
-    socket.on("connect", () => {
-      setSocket(socket);
+    // const defaultSocket = getDefaultSocket(restaurantName);
+    const restSocket = getRestaurantSocket(restaurantName, table, clientName);
+    console.log("🚀 ~ useEffect ~ restSocket:", restSocket);
+    // defaultSocket.connect();
+    // defaultSocket.connect();
+    // defaultSocket.on("connect", () => {
+    //   console.log(
+    //     `Connected to the default namespace for restaurant: ${restaurantName}`
+    //   );
+    // });
+    // // Handle the event when disconnected from the default namespace
+    // defaultSocket.on("disconnect", () => {
+    //   console.log(
+    //     `Disconnected from default namespace for restaurant: ${restaurantName}`
+    //   );
+
+    // Connect to the restaurant namespace after default socket disconnects
+    restSocket.connect();
+    // Handle events for the restaurant namespace
+    restSocket.on("connect", () => {
+      console.log(`Connected to the restaurant namespace: ${restaurantName}`);
+    });
+    restSocket.on("connect", () => {
+      setSocket(restSocket);
       console.log("Connected to server");
     });
-    socket.on("users", (e) => {
+    restSocket.on("users", (e) => {
       setUsersAtTable(e.filter((e: any) => e !== clientName));
     });
-    socket.on("share-req", (e) => {
-      console.log("🚀 ~ socket.on ~ e:", e);
+    restSocket.on("share-req", (e) => {
+      console.log("🚀 ~ restSocket.on ~ e:", e);
       addReq(e);
     });
-    socket.on("accept-req", (e) => {
+    restSocket.on("accept-req", (e) => {
       addSharer(e.dish, e.name);
     });
-    socket.on("update-splitters", (e) => {
+    restSocket.on("update-splitters", (e) => {
       setNumSplitters(e.dish, e.numSplitters);
     });
-    socket.on("disconnect", () => {
-      console.log("Disconnected from server");
+    restSocket.on("availability", ({ available, dishId }) => {
+      console.log("🚀 ~ restSocket.on ~ dishId:", dishId);
+      console.log("🚀 ~ restSocket.on ~ available:", available);
+      const updatedMenu = { ...menu };
+
+      // Iterate over the categories in the menu
+      Object.keys(updatedMenu).forEach((category) => {
+        const dishes = updatedMenu[category].dishes;
+
+        // Find the dish by id and update its unavailable property
+        const dishIndex = dishes.findIndex((dish) => dish._id === dishId);
+        if (dishIndex !== -1) {
+          dishes[dishIndex] = { ...dishes[dishIndex], unavailable: !available };
+        }
+      });
+
+      console.log("🚀 ~ restSocket.on ~ updatedMenu:", updatedMenu);
+      // Update the state with the modified menu
+      setMenu(updatedMenu);
     });
+    // restSocket.on("disconnect", () => {
+    //   console.log("Disconnected from server");
+    // });
+
+    // restSocket.on("message", (msg) => {
+    //   console.log(`Message from server for restaurant ${restaurantName}:`, msg);
+    // });
+
+    restSocket.on("disconnect", () => {
+      console.log(`Disconnected from restaurant namespace: ${restaurantName}`);
+    });
+
+    restSocket.on("error", (error) => {
+      console.error(`Error in restaurant namespace: ${restaurantName}`, error);
+    });
+    // });
+
     // return () => {
     //   socket.disconnect();
     // };
   }, [
     table,
+    restaurantName,
     clientName,
     addReq,
     addSharer,

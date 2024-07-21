@@ -16,6 +16,7 @@ export interface IDish {
   price: number;
   description?: string;
   image?: string;
+  unavailable?: boolean;
 }
 export type Cart = {
   [name: string]: {

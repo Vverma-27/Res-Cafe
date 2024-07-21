@@ -112,6 +112,13 @@ const DishCard = ({
                 </svg>
               </button>
             </div>
+          ) : dish.unavailable ? (
+            <button
+              className=" border-gray-600 border text-gray-600 rounded-md py-1 px-1 text-xxs font-semibold w-[14vw]"
+              disabled
+            >
+              Unavailable
+            </button>
           ) : (
             <button
               className="border-[#FF9633] border text-[#FF9633] rounded-md py-1 px-3 text-xs font-semibold w-[14vw]"
