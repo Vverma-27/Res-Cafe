@@ -55,7 +55,10 @@ const PaymentComponent = () => {
     try {
       const BASE_URL =
         process.env.NODE_ENV === "production"
-          ? `http://api.${location?.host}/restaurant/client`
+          ? `https://${location?.host.split(".")[0]}.api.${location?.host
+              .split(".")
+              .slice(1)
+              .join(".")}/restaurant/client`
           : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
       const response = await fetch(`${BASE_URL}/payment/order`, {
         method: "POST",

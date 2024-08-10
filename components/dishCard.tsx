@@ -68,7 +68,7 @@ const DishCard = ({
             width={11}
           />
         </p>
-        <p
+        <div
           className="text-xs font-extralight flex items-center justify-between w-full"
           onClick={(e) => {
             e.stopPropagation();
@@ -86,10 +86,10 @@ const DishCard = ({
                   stroke="currentColor"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="w-2.5"
-                    stroke-width="2"
+                    strokeWidth="2"
                     d="M20 12H4"
                   ></path>
                 </svg>
@@ -104,9 +104,9 @@ const DishCard = ({
                   stroke="currentColor"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M12 6v12m0-6h6m-6 0H6"
                   ></path>
                 </svg>
@@ -127,7 +127,7 @@ const DishCard = ({
               ADD
             </button>
           )}
-        </p>
+        </div>
       </div>
     </div>
   );

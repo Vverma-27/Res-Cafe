@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   const headersList = headers();
   const pathname = headersList.get("x-pathname");
-  console.log("🚀 ~ pathname:", pathname === "/cart");
+  // console.log("🚀 ~ pathname:", pathname === "/cart");
   return (
     <html lang="en" className="w-[100vw] h-[100vh] no-scrollbar">
       <body
@@ -32,7 +32,7 @@ export default function RootLayout({
           } p-4 bg-tertiary text-black overflow-y-scroll overflow-x-hidden no-scrollbar flex flex-col`
         }
       >
-        {pathname === "/payment" ? null : <Header />}
+        {pathname === "/payment" || pathname === "/success" ? null : <Header />}
         {children}
         <ShareModals />
       </body>

@@ -1,7 +1,10 @@
 export const getMenu = async () => {
   const BASE_URL =
     process.env.NODE_ENV === "production"
-      ? `http://api.${location?.host}/restaurant/client`
+      ? `https://${location?.host.split(".")[0]}.api.${location?.host
+          .split(".")
+          .slice(1)
+          .join(".")}/restaurant/client`
       : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
   try {
     console.log(
@@ -27,7 +30,10 @@ export const createClient = async (dataArg: {
   try {
     const BASE_URL =
       process.env.NODE_ENV === "production"
-        ? `http://api.${location?.host}/restaurant/client`
+        ? `https://${location?.host.split(".")[0]}.api.${location?.host
+            .split(".")
+            .slice(1)
+            .join(".")}/restaurant/client`
         : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
     const res = await fetch(`${BASE_URL}`, {
       method: "POST",
@@ -50,7 +56,10 @@ export const getPastOrders = async () => {
   try {
     const BASE_URL =
       process.env.NODE_ENV === "production"
-        ? `http://api.${location?.host}/restaurant/client`
+        ? `https://${location?.host.split(".")[0]}.api.${location?.host
+            .split(".")
+            .slice(1)
+            .join(".")}/restaurant/client`
         : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
     const res = await fetch(`${BASE_URL}/orders`, {
       method: "GET",

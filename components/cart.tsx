@@ -156,20 +156,20 @@ const Cart = () => {
                 localStorage?.setItem("number", number);
                 const { id } = await createClient({ email, name, number });
                 // console.log("🚀 ~ onClick={ ~ id:", res);
-                router.push(
-                  "/payment?" +
-                    new URLSearchParams({
-                      firstname: name.split(" ")[0],
-                      lastname: name.split(" ").slice(1).join(" "),
-                      amount: (1.21 * total).toFixed(2),
-                      email,
-                      number,
-                      id,
-                      productinfo: Object.values(cart)
-                        .map((d) => `${d.qty}x${d.dish._id}`)
-                        .join(","),
-                    }).toString()
-                );
+                // router.push(
+                //   "/payment?" +
+                //     new URLSearchParams({
+                //       firstname: name.split(" ")[0],
+                //       lastname: name.split(" ").slice(1).join(" "),
+                //       amount: (1.21 * total).toFixed(2),
+                //       email,
+                //       number,
+                //       id,
+                //       productinfo: Object.values(cart)
+                //         .map((d) => `${d.qty}x${d.dish._id}`)
+                //         .join(","),
+                //     }).toString()
+                // );
               }}
             >
               Pay Now

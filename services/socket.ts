@@ -2,8 +2,12 @@ import { Socket, io } from "socket.io-client";
 
 // "undefined" means the URL will be computed from the `window.location` object
 const URL =
-  process.env.NODE_ENV === "production" ? undefined : "ws://localhost:3000/";
-
+  process.env.NODE_ENV === "production"
+    ? `https://${location?.host.split(".")[0]}.api.${location?.host
+        .split(".")
+        .slice(1)
+        .join(".")}/`
+    : "ws://localhost:3000/";
 // let restSocket: Socket | null = null; // Declare restSocket outside the function scope
 
 // Function to get the socket connection
