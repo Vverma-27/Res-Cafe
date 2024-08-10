@@ -295,31 +295,30 @@ export default function Home() {
       const { menu, name } = await getMenu();
       const { orders } = await getPastOrders();
       console.log("🚀 ~ orders:", orders);
-      const dishFreq: { [name: string]: number } = {};
-      const listOrders = orders?.map((e: any) => e.list);
-      listOrders?.forEach((e: string) => {
-        const dishesWFreq = e.split(",");
-        dishesWFreq.forEach((dishArg) => {
-          const [freq, dish] = dishArg.split("x");
-          dishFreq[dish] = parseInt(freq);
-        });
-      });
-      const entries = Object.entries(dishFreq);
-      entries.sort((a, b) => b[1] - a[1]);
-      const sortedDishNames = entries.map((entry) => entry[0]);
-      const allDishes: IDish[] = Object.values(menu)
-        .map((cat: any) => {
-          return cat.dishes;
-        })
-        .reduce((acc, curr) => acc.concat(curr), []);
-      const dishes = sortedDishNames
-        .map((name) => {
-          const dish = allDishes.find((d: IDish) => d.name === name);
-          return dish;
-        })
-        .filter((e) => e !== undefined);
-      //@ts-ignore
-      setPastOrders(dishes);
+      // const dishFreq: { [name: string]: number } = {};
+      // const listOrders = orders?.map((e: any) => e.list);
+      // listOrders?.forEach((e: string) => {
+      //   const dishesWFreq = e.split(",");
+      //   dishesWFreq.forEach((dishArg) => {
+      //     const [freq, dish] = dishArg.split("x");
+      //     dishFreq[dish] = parseInt(freq);
+      //   });
+      // });
+      // const entries = Object.entries(dishFreq);
+      // entries.sort((a, b) => b[1] - a[1]);
+      // const sortedDishNames = entries.map((entry) => entry[0]);
+      // const allDishes: IDish[] = Object.values(menu)
+      //   .map((cat: any) => {
+      //     return cat.dishes;
+      //   })
+      //   .reduce((acc, curr) => acc.concat(curr), []);
+      // const dishes = sortedDishNames
+      //   .map((name) => {
+      //     const dish = allDishes.find((d: IDish) => d.name === name);
+      //     return dish;
+      //   })
+      //   .filter((e) => e !== undefined);
+      setPastOrders(orders);
       setMenu(menu);
       setRestaurantName(name);
       const table = searchParams.get("table");
