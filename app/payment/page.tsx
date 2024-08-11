@@ -41,6 +41,7 @@ const PaymentComponent = () => {
     () => ({
       txnid, // String
       amount: searchParams.get("amount") || "0", // Float
+      amountPayable: searchParams.get("amountPayable") || "0", // Float
       productinfo: searchParams.get("productinfo") || "", // String
       name:
         (searchParams.get("firstname") || "") +
@@ -101,7 +102,8 @@ const PaymentComponent = () => {
     !searchParams.get("firstname") ||
     !searchParams.get("email") ||
     !searchParams.get("number") ||
-    !searchParams.get("amount")
+    !searchParams.get("amount") ||
+    !searchParams.get("amountPayable")
   ) {
     router.push("/");
     return null;
