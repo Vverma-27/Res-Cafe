@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import { headers } from "next/headers";
-import ShareModals from "@/components/shareModal";
+// import ShareModals from "@/components/shareModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +34,6 @@ export default function RootLayout({
       >
         {pathname === "/payment" || pathname === "/success" ? null : <Header />}
         {children}
-        <ShareModals />
       </body>
     </html>
   );
