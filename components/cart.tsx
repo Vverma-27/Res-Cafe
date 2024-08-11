@@ -8,7 +8,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { createClient } from "@/services/api";
 
 const Cart = () => {
-  const { cart, table } = useStore();
+  const { cart, table, setNumSplitters, setExclude } = useStore();
   console.log("🚀 ~ cart:", cart);
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
@@ -29,6 +29,14 @@ const Cart = () => {
   const total = Object.values(cart)
     ?.filter((e) => e.dish !== undefined)
     ?.map((e) => e.dish.price * e.qty)
+    ?.reduce((prev, curr) => prev + curr, 0);
+  const totalPayable = Object.values(cart)
+    ?.filter((e) => e.dish !== undefined)
+    ?.map((e) =>
+      e.exclude
+        ? 0
+        : +((e.dish.price / (e.numSplitters || 1)) * e.qty).toFixed(0)
+    )
     ?.reduce((prev, curr) => prev + curr, 0);
 
   return (
@@ -54,8 +62,15 @@ const Cart = () => {
                   key={item.dish.name} // Ensure each CartItem has a unique key
                   dish={item.dish}
                   qty={item.qty}
-                  shared={item.shared || ""}
-                  numSplitters={item.numSplitters || 0}
+                  exclude={Boolean(item.exclude)}
+                  setExclude={(exclude) => {
+                    setExclude(item.dish.name, exclude);
+                  }}
+                  setNumSplitters={(num) => {
+                    if (num > 0) setNumSplitters(item.dish.name, num);
+                  }}
+                  // shared={item.shared || ""}
+                  numSplitters={item.numSplitters || 1}
                 />
               </>
             ) : null
@@ -69,12 +84,14 @@ const Cart = () => {
             <p className="font-sans text-sm text-[#777] font-light">
               Item Total
             </p>
-            <p className="font-sans text-sm text-[#777] font-light">₹{total}</p>
+            <p className="font-sans text-sm text-[#777] font-light">
+              ₹{totalPayable}
+            </p>
           </div>
           <div className="flex justify-between items-center w-full">
             <p className="font-sans text-sm text-[#777] font-light">Taxes</p>
             <p className="font-sans text-sm text-[#777] font-light">
-              ₹{(0.18 * total).toFixed(2)}
+              ₹{(0.18 * totalPayable).toFixed(0)}
             </p>
           </div>
           <div className="flex justify-between items-center w-full">
@@ -82,7 +99,7 @@ const Cart = () => {
               Convenience Fee
             </p>
             <p className="font-sans text-sm text-[#777] font-light">
-              ₹{(0.03 * total).toFixed(2)}
+              ₹{(0.03 * totalPayable).toFixed(0)}
             </p>
           </div>
         </div>
@@ -90,7 +107,7 @@ const Cart = () => {
           <div>
             <p>Total Price</p>
             <p className="font-sans text-md font-semibold">
-              ₹{(1.21 * total).toFixed(2)}
+              ₹{(1.21 * totalPayable).toFixed(0)}
             </p>
           </div>
           <button
@@ -156,20 +173,23 @@ const Cart = () => {
                 localStorage?.setItem("number", number);
                 const { id } = await createClient({ email, name, number });
                 // console.log("🚀 ~ onClick={ ~ id:", res);
-                // router.push(
-                //   "/payment?" +
-                //     new URLSearchParams({
-                //       firstname: name.split(" ")[0],
-                //       lastname: name.split(" ").slice(1).join(" "),
-                //       amount: (1.21 * total).toFixed(2),
-                //       email,
-                //       number,
-                //       id,
-                //       productinfo: Object.values(cart)
-                //         .map((d) => `${d.qty}x${d.dish._id}`)
-                //         .join(","),
-                //     }).toString()
-                // );
+                router.push(
+                  "/payment?" +
+                    new URLSearchParams({
+                      firstname: name.split(" ")[0],
+                      lastname: name.split(" ").slice(1).join(" "),
+                      amount: (1.21 * total).toFixed(0),
+                      amountPayable: (1.21 * totalPayable).toFixed(0),
+                      email,
+                      number,
+                      id,
+                      productinfo: Object.values(cart)
+                        .map(
+                          (d) => `${d.qty}:${d.dish._id}:${d.numSplitters || 1}`
+                        )
+                        .join(","),
+                    }).toString()
+                );
               }}
             >
               Pay Now

@@ -175,14 +175,11 @@ export default function Home() {
     firstLoad,
     setFirstLoad,
     setPastOrders,
-    setUsersAtTable,
     table,
     setTable,
     pastOrders,
     clientName,
     setClientName,
-    addReq,
-    addSharer,
     setSocket,
     setNumSplitters,
   } = useStore();
@@ -227,19 +224,19 @@ export default function Home() {
       setSocket(restSocket);
       console.log("Connected to server");
     });
-    restSocket.on("users", (e) => {
-      setUsersAtTable(e.filter((e: any) => e !== clientName));
-    });
-    restSocket.on("share-req", (e) => {
-      console.log("🚀 ~ restSocket.on ~ e:", e);
-      addReq(e);
-    });
-    restSocket.on("accept-req", (e) => {
-      addSharer(e.dish, e.name);
-    });
-    restSocket.on("update-splitters", (e) => {
-      setNumSplitters(e.dish, e.numSplitters);
-    });
+    // restSocket.on("users", (e) => {
+    //   setUsersAtTable(e.filter((e: any) => e !== clientName));
+    // });
+    // restSocket.on("share-req", (e) => {
+    //   console.log("🚀 ~ restSocket.on ~ e:", e);
+    //   addReq(e);
+    // });
+    // restSocket.on("accept-req", (e) => {
+    //   addSharer(e.dish, e.name);
+    // });
+    // restSocket.on("update-splitters", (e) => {
+    //   setNumSplitters(e.dish, e.numSplitters);
+    // });
     restSocket.on("availability", ({ available, dishId }) => {
       console.log("🚀 ~ restSocket.on ~ dishId:", dishId);
       console.log("🚀 ~ restSocket.on ~ available:", available);
@@ -280,16 +277,7 @@ export default function Home() {
     // return () => {
     //   socket.disconnect();
     // };
-  }, [
-    table,
-    restaurantName,
-    clientName,
-    addReq,
-    addSharer,
-    setNumSplitters,
-    setSocket,
-    setUsersAtTable,
-  ]);
+  }, [table, restaurantName, clientName, setNumSplitters, setSocket]);
   useEffect(() => {
     (async () => {
       const { menu, name } = await getMenu();

@@ -22,8 +22,9 @@ export type Cart = {
   [name: string]: {
     dish: IDish;
     qty: number;
-    shared?: string;
+    // shared?: string;
     numSplitters?: number;
+    exclude?: boolean;
   };
 };
 export interface IShareReq {
@@ -41,18 +42,19 @@ export interface IStore {
   setSocket: (socket: Socket) => void;
   setTable: (id: string | number) => void;
   setNumSplitters: (dish: string, splitters: number) => void;
+  setExclude: (dish: string, exclude: boolean) => void;
   table: string | number;
-  shareReqs: IShareReq[];
-  addReq: (req: IShareReq) => void;
-  removeReq: () => void;
-  // setShareList: (list: { dish: string; sharers: string[] }[]) => void;
-  addSharer: (dish: string, sharer: string) => void;
-  removeSharer: (dish: string, sharer: string) => void;
-  shareList: { [name: string]: string[] };
+  // shareReqs: IShareReq[];
+  // addReq: (req: IShareReq) => void;
+  // removeReq: () => void;
+  // // setShareList: (list: { dish: string; sharers: string[] }[]) => void;
+  // addSharer: (dish: string, sharer: string) => void;
+  // removeSharer: (dish: string, sharer: string) => void;
+  // shareList: { [name: string]: string[] };
   clientName: string;
   setClientName: (name: string) => void;
-  usersAtTable: string[];
-  setUsersAtTable: (a: string[]) => void;
+  // usersAtTable: string[];
+  // setUsersAtTable: (a: string[]) => void;
   setMenu: (menu: Menu) => void;
   restaurantName: string;
   setRestaurantName: (name: string) => void;

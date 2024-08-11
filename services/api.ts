@@ -22,6 +22,30 @@ export const getMenu = async () => {
     return { menu: {}, name: "" };
   }
 };
+export const getOrderDetails = async (orderID: string) => {
+  const BASE_URL =
+    process.env.NODE_ENV === "production"
+      ? `https://${location?.host.split(".")[0]}.api.${location?.host
+          .split(".")
+          .slice(1)
+          .join(".")}/restaurant/client`
+      : process.env.NEXT_PUBLIC_CLIENT_API_URL || "";
+  try {
+    console.log(
+      "🚀 ~ getMenu ~ process.env.CLIENT_API_URL:",
+      process.env.NEXT_PUBLIC_CLIENT_API_URL
+    );
+    const res = await fetch(`${BASE_URL}/order/details/${orderID}`, {
+      method: "GET",
+      credentials: "include",
+    });
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    console.log("🚀 ~ getMenu ~ e:", e);
+    return { menu: {}, name: "" };
+  }
+};
 export const createClient = async (dataArg: {
   email: string;
   number: string;
