@@ -46,7 +46,7 @@ const Success = () => {
       <h1 className="text-xl text-center font-bold font-heading">
         Your Order has been placed successfully
       </h1>
-      {Boolean(searchParams.get("remaining")) ? (
+      {JSON.parse(searchParams.get("remaining") as string) ? (
         <>
           <p className="text-sm font-para text-center">
             Share the link below with your friends to pay the remaining amount.
