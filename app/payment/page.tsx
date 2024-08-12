@@ -49,6 +49,8 @@ const PaymentComponent = () => {
       email: searchParams.get("email") || "", // String
       customer_id: searchParams.get("id") || "",
       number: searchParams.get("number") || "",
+      throughLink: Boolean(searchParams.get("orderID")),
+      orderID: searchParams.get("orderID"),
     }),
     [searchParams, txnid]
   );

@@ -46,30 +46,34 @@ const Success = () => {
       <h1 className="text-xl text-center font-bold font-heading">
         Your Order has been placed successfully
       </h1>
-      <p className="text-sm font-para text-center">
-        Share the link below with your friends to pay the remaining amount.
-      </p>
-      <div className="w-full max-w-lg bg-gray-100 p-4 rounded-lg shadow-md flex flex-col items-center">
-        <Link href={url}>
-          <p className="text-blue-600 break-words text-center">{url}</p>
-        </Link>
-      </div>
-      <div className="flex gap-4 mt-2">
-        <button
-          onClick={copyToClipboard}
-          className="flex items-center gap-2 bg-gray-200 p-2 rounded-md shadow-md hover:bg-gray-300"
-        >
-          <IoCopyOutline className="text-xl" />
-          <span>{text}</span>
-        </button>
-        <button
-          onClick={shareLink}
-          className="flex items-center gap-2 bg-blue-600 text-white p-2 rounded-md shadow-md hover:bg-blue-700"
-        >
-          <HiOutlineShare className="text-xl" />
-          <span>Share Link</span>
-        </button>
-      </div>
+      {Boolean(searchParams.get("remaining")) ? (
+        <>
+          <p className="text-sm font-para text-center">
+            Share the link below with your friends to pay the remaining amount.
+          </p>
+          <div className="w-full max-w-lg bg-gray-100 p-4 rounded-lg shadow-md flex flex-col items-center">
+            <Link href={url}>
+              <p className="text-blue-600 break-words text-center">{url}</p>
+            </Link>
+          </div>
+          <div className="flex gap-4 mt-2">
+            <button
+              onClick={copyToClipboard}
+              className="flex items-center gap-2 bg-gray-200 p-2 rounded-md shadow-md hover:bg-gray-300"
+            >
+              <IoCopyOutline className="text-xl" />
+              <span>{text}</span>
+            </button>
+            <button
+              onClick={shareLink}
+              className="flex items-center gap-2 bg-blue-600 text-white p-2 rounded-md shadow-md hover:bg-blue-700"
+            >
+              <HiOutlineShare className="text-xl" />
+              <span>Share Link</span>
+            </button>
+          </div>
+        </>
+      ) : null}
     </section>
   );
 };
