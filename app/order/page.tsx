@@ -226,6 +226,18 @@ const Order = () => {
                       number,
                       id,
                       orderID: searchParams.get("orderID") as string,
+                      selectedDishes: selectedDishes
+                        .map((d) => {
+                          const currDish = orderDetails.orderDetails.find(
+                            (e) => e.dish.name === d
+                          ) as {
+                            dish: IDish;
+                            qty: number;
+                            numSplitters: number;
+                          };
+                          return `${currDish.dish._id}`;
+                        })
+                        .join(","),
                       productinfo: orderDetails.orderDetails
                         .map(
                           (d) => `${d.qty}:${d.dish._id}:${d.numSplitters || 1}`

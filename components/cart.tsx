@@ -184,6 +184,9 @@ const Cart = () => {
                       email,
                       number,
                       id,
+                      selectedDishes: Object.values(cart)
+                        .map((d) => (d.exclude ? "" : `${d.dish._id}`))
+                        .join(","),
                       productinfo: Object.values(cart)
                         .map(
                           (d) => `${d.qty}:${d.dish._id}:${d.numSplitters || 1}`

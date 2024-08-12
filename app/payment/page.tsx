@@ -51,6 +51,7 @@ const PaymentComponent = () => {
       number: searchParams.get("number") || "",
       throughLink: Boolean(searchParams.get("orderID")),
       orderID: searchParams.get("orderID"),
+      transactionOrder: searchParams.get("selectedDishes"),
     }),
     [searchParams, txnid]
   );
