@@ -3,7 +3,7 @@ import { createClient, getOrderDetails } from "@/services/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import CartItem from "../../components/cartItem"; // Assuming CartItem is reusable
-import { IDish } from "@/interfaces";
+import { IDish, OrderStatus } from "@/interfaces";
 import Modal from "@/components/modal";
 
 const Order = () => {
@@ -13,6 +13,7 @@ const Order = () => {
     remainingAmount: number;
     transactions: { name: string; amount: number }[];
     _id: string;
+    status: OrderStatus;
   } | null>(null);
   const [selectedDishes, setSelectedDishes] = useState<string[]>([]);
   const searchParams = useSearchParams();
@@ -65,8 +66,13 @@ const Order = () => {
       </div>
     );
 
-  if (orderDetails.remainingAmount <= 0) {
-    return <p>Order already paid in full. No further action required.</p>;
+  if (
+    orderDetails.remainingAmount <= 0 ||
+    orderDetails.status === OrderStatus.PAIDINFULL ||
+    orderDetails.status === OrderStatus.CANCELLED ||
+    orderDetails.status === OrderStatus.COMPLETED
+  ) {
+    return <p>Order already completed. No further action required.</p>;
   }
   const totalPayable = orderDetails.orderDetails
     .map((item) =>
@@ -111,7 +117,7 @@ const Order = () => {
                 exclude={false}
                 setExclude={(_exclude) => {}}
                 setNumSplitters={(_num) => {}}
-                numSplitters={0}
+                numSplitters={item.numSplitters}
               />
             </div>
           ))}
@@ -146,13 +152,13 @@ const Order = () => {
             <p>Total Price</p>
             <p className="font-sans text-md font-semibold">₹{finalTotal}</p>
           </div>
+          <button
+            className="bg-[#FF9633] py-3.5 px-10 text-white rounded-xl text-sm"
+            onClick={() => setModalOpen(true)}
+          >
+            Checkout
+          </button>
         </div>
-        <button
-          className="bg-[#FF9633] py-3.5 px-10 text-white rounded-xl text-sm"
-          onClick={() => setModalOpen(true)}
-        >
-          Checkout
-        </button>
       </div>
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
         <div className="w-full flex flex-col gap-2 flex-grow overflow-hidden">

@@ -69,3 +69,11 @@ export interface IStore {
   pastOrders: IDish[];
   setPastOrders: (orders: IDish[]) => void;
 }
+
+export enum OrderStatus {
+  CREATED = "CREATED",
+  PARTIALLY_PAID = "PARTIALLY_PAID",
+  PAIDINFULL = "PAIDINFULL",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
+}
