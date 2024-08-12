@@ -66,6 +66,7 @@ const Cart = () => {
                   setExclude={(exclude) => {
                     setExclude(item.dish.name, exclude);
                   }}
+                  interactive
                   setNumSplitters={(num) => {
                     if (num > 0) setNumSplitters(item.dish.name, num);
                   }}
