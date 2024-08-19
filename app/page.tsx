@@ -369,7 +369,7 @@ export default function Home() {
         <p>Good food is brewing</p>
         {(pastOrders.length && (
           <div className="mt-4 w-full">
-            <p className="font-bold text-md">Your Favourites</p>
+            <p className="font-bold text-md">Previously Ordered</p>
             <div className="overflow-x-scroll max-w-fit w-[calc(100vw-1rem)] flex p-1 pb-3 justify-between items-center gap-3 no-scrollbar">
               {pastOrders?.map((dish: IDish) => (
                 <DishCard dish={dish} key={dish._id} />
