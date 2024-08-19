@@ -51,7 +51,9 @@ const CartItem = ({
               ₹{dish.price * qty}
             </p>
             <p className="font-sans text-xs font-light">
-              {numSplitters > 1
+              {exclude
+                ? "₹0"
+                : numSplitters > 1
                 ? "₹" + ((dish.price / numSplitters) * qty).toFixed(0)
                 : null}
             </p>

@@ -2,10 +2,12 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useMemo, useCallback, Suspense } from "react";
 import { initializeSDK } from "../../services/cashfree";
+import useStore from "@/store";
 const PaymentComponent = () => {
   const [sessionId, setSessionId] = useState("");
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { table } = useStore();
   const generateTxnId = () => {
     const now = new Date();
     const timestamp = Date.now(); // Current timestamp in milliseconds
@@ -47,13 +49,14 @@ const PaymentComponent = () => {
         (searchParams.get("firstname") || "") +
         (searchParams.get("lastname") || ""), // String
       email: searchParams.get("email") || "", // String
+      table,
       customer_id: searchParams.get("id") || "",
       number: searchParams.get("number") || "",
       throughLink: Boolean(searchParams.get("orderID")),
       orderID: searchParams.get("orderID"),
       transactionOrder: searchParams.get("selectedDishes"),
     }),
-    [searchParams, txnid]
+    [searchParams, txnid, table]
   );
   const paymentReqCashfree = useCallback(async () => {
     try {

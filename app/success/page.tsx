@@ -14,7 +14,11 @@ const Success = () => {
 
   useEffect(() => {
     setUrl(
-      window.location.origin + "/order?orderID=" + searchParams.get("orderID")
+      window.location.origin +
+        "/order?table=" +
+        searchParams.get("table") +
+        "&orderID=" +
+        searchParams.get("orderID")
     );
     return () => {
       //@ts-ignore
