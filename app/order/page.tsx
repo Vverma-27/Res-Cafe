@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import CartItem from "../../components/cartItem"; // Assuming CartItem is reusable
 import { IDish, OrderStatus } from "@/interfaces";
 import Modal from "@/components/modal";
+import useStore from "@/store";
 
 const Order = () => {
   const [orderDetails, setOrderDetails] = useState<{
@@ -22,6 +23,7 @@ const Order = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
+  const { setTable } = useStore();
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -34,6 +36,10 @@ const Order = () => {
     setEmail(localStorage.getItem("email") || "");
     setNumber(localStorage.getItem("number") || "");
   }, []);
+  useEffect(() => {
+    const table = searchParams.get("table");
+    setTable(table || "");
+  }, [setTable]);
 
   const handleDishSelection = (dishId: string) => {
     setSelectedDishes((prev) =>
