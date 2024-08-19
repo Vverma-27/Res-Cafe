@@ -30,6 +30,9 @@ const Order = () => {
       setOrderDetails(res.order);
     };
     fetchOrderDetails();
+    setName(localStorage.getItem("name") || "");
+    setEmail(localStorage.getItem("email") || "");
+    setNumber(localStorage.getItem("number") || "");
   }, []);
 
   const handleDishSelection = (dishId: string) => {
@@ -226,18 +229,7 @@ const Order = () => {
                       number,
                       id,
                       orderID: searchParams.get("orderID") as string,
-                      selectedDishes: selectedDishes
-                        .map((d) => {
-                          const currDish = orderDetails.orderDetails.find(
-                            (e) => e.dish.name === d
-                          ) as {
-                            dish: IDish;
-                            qty: number;
-                            numSplitters: number;
-                          };
-                          return `${currDish.dish._id}`;
-                        })
-                        .join(","),
+                      selectedDishes: selectedDishes.join(","),
                       productinfo: orderDetails.orderDetails
                         .map(
                           (d) => `${d.qty}:${d.dish._id}:${d.numSplitters || 1}`
