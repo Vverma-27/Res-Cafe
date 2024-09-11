@@ -156,7 +156,7 @@ const Cart = () => {
                 Phone no.
               </label>
               <input
-                type="text"
+                type="number"
                 value={number}
                 onChange={(e) => setNumber(e.target.value)}
                 className="bg-transparent rounded-lg text-sm font-semibold py-2 px-1 border-2"
@@ -169,6 +169,24 @@ const Cart = () => {
             <button
               className="bg-[#FF9633] py-3.5 px-10 text-white rounded-xl text-sm"
               onClick={async () => {
+                if (number.length !== 10) {
+                  alert("Please enter a valid phone number");
+                  return;
+                }
+                //regex check if number contains letters
+                if (/^[0-9]+$/.test(number) === false) {
+                  alert("Please enter a valid phone number");
+                  return;
+                }
+                //check if email is valid
+                if (
+                  email.match(
+                    /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+                  ) === null
+                ) {
+                  alert("Please enter a valid email");
+                  return;
+                }
                 localStorage?.setItem("name", name);
                 localStorage?.setItem("email", email);
                 localStorage?.setItem("number", number);

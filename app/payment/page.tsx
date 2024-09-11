@@ -77,8 +77,12 @@ const PaymentComponent = () => {
       });
       const session_id = (await response.json()).session_id;
       setSessionId(session_id);
-    } catch (error) {
+    } catch (error: any) {
       console.log("Payment Error:", error);
+      if (error.msg) {
+        alert(error.msg);
+        router.push("/?table=" + table);
+      }
     }
   }, [data]);
   // useEffect(() => {
