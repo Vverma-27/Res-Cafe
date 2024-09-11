@@ -187,6 +187,11 @@ const Cart = () => {
                   alert("Please enter a valid email");
                   return;
                 }
+                //check if email name and phone exist
+                if (name === "" || email === "" || number === "") {
+                  alert("Please enter all the details");
+                  return;
+                }
                 localStorage?.setItem("name", name);
                 localStorage?.setItem("email", email);
                 localStorage?.setItem("number", number);
